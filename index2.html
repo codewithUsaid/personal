@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Power and Danger of Social Media</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .social-icon {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .social-icon:nth-child(2) { animation-delay: 0.5s; }
+        .social-icon:nth-child(3) { animation-delay: 1s; }
+        .social-icon:nth-child(4) { animation-delay: 1.5s; }
+        .social-icon:nth-child(5) { animation-delay: 2s; }
+        .social-icon:nth-child(6) { animation-delay: 2.5s; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .pulse-glow {
+            animation: pulseGlow 2s infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(102, 126, 234, 0.6); }
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/95 backdrop-blur-md z-50 shadow-sm">
+        <div class="max-w-6xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-xl font-bold gradient-text">Social Media Speech</h1>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#hero" class="text-gray-600 hover:text-purple-600 transition-colors">Home</a>
+                    <a href="#benefits" class="text-gray-600 hover:text-purple-600 transition-colors">Benefits</a>
+                    <a href="#dangers" class="text-gray-600 hover:text-purple-600 transition-colors">Dangers</a>
+                    <a href="#conclusion" class="text-gray-600 hover:text-purple-600 transition-colors">Conclusion</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-bg min-h-screen flex items-center justify-center relative overflow-hidden">
+        <!-- Floating Social Media Icons -->
+        <div class="absolute inset-0 opacity-20">
+            <!-- Facebook -->
+            <div class="social-icon absolute top-20 left-20">
+                <div class="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-xl">f</span>
+                </div>
+            </div>
+            <!-- Instagram -->
+            <div class="social-icon absolute top-32 right-32">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </div>
+            </div>
+            <!-- Twitter -->
+            <div class="social-icon absolute bottom-40 left-40">
+                <div class="w-16 h-16 bg-blue-400 rounded-full flex items-center justify-center">
+                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                    </svg>
+                </div>
+            </div>
+            <!-- TikTok -->
+            <div class="social-icon absolute top-1/2 right-20">
+                <div class="w-16 h-16 bg-black rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-xl">TT</span>
+                </div>
+            </div>
+            <!-- YouTube -->
+            <div class="social-icon absolute bottom-32 right-1/3">
+                <div class="w-16 h-16 bg-red-600 rounded-lg flex items-center justify-center">
+                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                </div>
+            </div>
+            <!-- Snapchat -->
+            <div class="social-icon absolute bottom-20 left-1/4">
+                <div class="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center">
+                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.404-5.958 1.404-5.958s-.359-.719-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.748-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001.012.001z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <div class="max-w-4xl mx-auto px-6 text-center text-white relative z-10">
+            <div class="fade-in">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                    The Power and Danger of
+                    <span class="text-yellow-300">Social Media</span>
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 opacity-90 max-w-3xl mx-auto">
+                    A speech about how social media helps us and also causes problems.
+                </p>
+                <button onclick="document.getElementById('introduction').scrollIntoView({behavior: 'smooth'})" 
+                        class="bg-yellow-400 text-purple-800 px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg pulse-glow">
+                    Explore Speech 🎤
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Introduction Section -->
+    <section id="introduction" class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="scroll-reveal text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-6">Introduction</h2>
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="md:w-1/3">
+                        <div class="w-48 h-48 bg-gradient-to-br from-purple-400 to-blue-500 rounded-full mx-auto flex items-center justify-center">
+                            <svg class="w-24 h-24 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-4 italic"><b style="font-size: 15px;">Usaid Raza Attari</b></p>
+                    </div>
+                    <div class="md:w-2/3 text-left">
+                        <p class="text-lg text-gray-700 leading-relaxed">
+                            In Today, social media is a big part of our daily lives. From the time we wake up to 
+                            when we go to sleep, it affects how we talk, learn, and see the world. But like anything
+                            powerful, social media has both good sides and bad sides that we need to understand and
+                            handle wisely.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="scroll-reveal text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-800 mb-6">The Power of Social Media</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Discover the incredible ways social media enhances our lives and connects our world
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Instant Communication -->
+                <div class="scroll-reveal card-hover bg-white p-8 rounded-3xl shadow-lg text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Instant Communication</h3>
+                    <p class="text-gray-600">Connect with friends and family worldwide in real-time, breaking down geographical barriers.</p>
+                </div>
+
+                <!-- Educational Content -->
+                <div class="scroll-reveal card-hover bg-white p-8 rounded-3xl shadow-lg text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Educational Content</h3>
+                    <p class="text-gray-600">Access unlimited learning resources, tutorials, and educational content from experts globally.</p>
+                </div>
+
+                <!-- Global Connection -->
+                <div class="scroll-reveal card-hover bg-white p-8 rounded-3xl shadow-lg text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Global Connection</h3>
+                    <p class="text-gray-600">Build communities and friendships across cultures, fostering global understanding and unity.</p>
+                </div>
+
+                <!-- Self-Expression -->
+                <div class="scroll-reveal card-hover bg-white p-8 rounded-3xl shadow-lg text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Self-Expression</h3>
+                    <p class="text-gray-600">Share creativity, thoughts, and experiences, finding your voice and building personal brand.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dangers Section -->
+    <section id="dangers" class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="scroll-reveal text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-800 mb-6">The Dangers We Must Address</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Understanding the risks helps us navigate social media more safely and responsibly
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Cyberbullying -->
+                <div class="scroll-reveal card-hover bg-gradient-to-br from-red-50 to-pink-50 p-8 rounded-3xl border border-red-200">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Cyberbullying</h3>
+                            <p class="text-gray-600 mb-4">Online harassment can cause severe emotional damage, especially among young users who may feel trapped and helpless.</p>
+                            <div class="text-sm text-red-600 font-medium">Impact: Depression, anxiety, social isolation</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Addiction -->
+                <div class="scroll-reveal card-hover bg-gradient-to-br from-orange-50 to-yellow-50 p-8 rounded-3xl border border-orange-200">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Digital Addiction</h3>
+                            <p class="text-gray-600 mb-4">Excessive use can lead to dependency, affecting productivity, relationships, and real-world social skills.</p>
+                            <div class="text-sm text-orange-600 font-medium">Impact: Sleep disruption, decreased focus, social withdrawal</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mental Health -->
+                <div class="scroll-reveal card-hover bg-gradient-to-br from-purple-50 to-indigo-50 p-8 rounded-3xl border border-purple-200">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Mental Health Effects</h3>
+                            <p class="text-gray-600 mb-4">Constant comparison with others can trigger feelings of inadequacy, low self-esteem, and depression.</p>
+                            <div class="text-sm text-purple-600 font-medium">Impact: Body image issues, FOMO, decreased self-worth</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Misinformation -->
+                <div class="scroll-reveal card-hover bg-gradient-to-br from-blue-50 to-cyan-50 p-8 rounded-3xl border border-blue-200">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Misinformation</h3>
+                            <p class="text-gray-600 mb-4">False information spreads rapidly, influencing opinions and decisions based on inaccurate or misleading content.</p>
+                            <div class="text-sm text-blue-600 font-medium">Impact: Poor decision-making, polarization, distrust</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Section -->
+    <section class="py-20 bg-gradient-to-r from-purple-600 to-blue-600">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <div class="scroll-reveal">
+                <svg class="w-16 h-16 text-yellow-300 mx-auto mb-8" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+                <blockquote class="text-3xl md:text-4xl font-bold text-white mb-8 leading-relaxed">
+                    "Social media is a powerful tool, but like all tools, it depends on how we use it."
+                </blockquote>
+                <p class="text-xl text-purple-200">
+                    The key lies in conscious, mindful usage that maximizes benefits while minimizing risks.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusion Section -->
+    <section id="conclusion" class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <div class="scroll-reveal">
+                <h2 class="text-4xl font-bold text-gray-800 mb-8">Moving Forward Wisely</h2>
+                <div class="bg-white p-8 rounded-3xl shadow-lg mb-8">
+                    <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                        As we navigate this digital landscape, we must remember that social media is neither inherently good nor bad – 
+                        it's a reflection of how we choose to use it. By understanding both its power and its dangers, we can harness 
+                        its benefits while protecting ourselves from its risks.
+                    </p>
+                    <div class="grid md:grid-cols-3 gap-6 mt-8">
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <span class="text-white font-bold">✓</span>
+                            </div>
+                            <h4 class="font-semibold text-gray-800 mb-2">Be Mindful</h4>
+                            <p class="text-sm text-gray-600">Think before you post and engage</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <span class="text-white font-bold">⚖️</span>
+                            </div>
+                            <h4 class="font-semibold text-gray-800 mb-2">Find Balance</h4>
+                            <p class="text-sm text-gray-600">Limit screen time and prioritize real connections</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <span class="text-white font-bold">🛡️</span>
+                            </div>
+                            <h4 class="font-semibold text-gray-800 mb-2">Stay Safe</h4>
+                            <p class="text-sm text-gray-600">Protect your privacy and verify information</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-xl gradient-text font-semibold">
+                    Let's use social media as a force for good – connecting, learning, and growing together responsibly.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <div class="mb-6">
+                <h3 class="text-2xl font-bold mb-4">Thank You</h3>
+                <p class="text-gray-300 mb-6">Presented by a Level 4 English Student</p>
+                <div class="flex justify-center space-x-6">
+                    <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center opacity-50">
+                        <span class="text-white text-sm">f</span>
+                    </div>
+                    <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center opacity-50">
+                        <span class="text-white text-sm">📷</span>
+                    </div>
+                    <div class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center opacity-50">
+                        <span class="text-white text-sm">🐦</span>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-6">
+                <p class="text-gray-400 text-sm">
+                    © 2024 Social Media Speech. Created for educational purposes.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all scroll-reveal elements
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add active state to navigation
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('nav a[href^="#"]');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-purple-600');
+                link.classList.add('text-gray-600');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.remove('text-gray-600');
+                    link.classList.add('text-purple-600');
+                }
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96341558350d21ec',t:'MTc1MzE5OTMxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
