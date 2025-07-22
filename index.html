@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Level 4 - Team Challenge Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Nunito:wght@400;600;700;800&display=swap');
+        
+        .game-font {
+            font-family: 'Fredoka One', cursive;
+        }
+        
+        .content-font {
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .bounce-in {
+            animation: bounceIn 0.8s ease-out;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+            50% { transform: scale(1.1) rotate(5deg); }
+            70% { transform: scale(0.9) rotate(-2deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        
+        .team-glow {
+            animation: teamGlow 2s infinite alternate;
+        }
+        
+        @keyframes teamGlow {
+            0% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+            100% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.8); }
+        }
+        
+        .winner-celebration {
+            animation: celebration 1s ease-in-out infinite;
+        }
+        
+        @keyframes celebration {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(5deg); }
+            75% { transform: scale(1.1) rotate(-5deg); }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            0% { transform: translateY(50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        
+        .timer-urgent {
+            animation: timerUrgent 0.5s infinite;
+        }
+        
+        @keyframes timerUrgent {
+            0%, 100% { transform: scale(1); color: #dc2626; }
+            50% { transform: scale(1.2); color: #ef4444; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 min-h-screen content-font">
+    <div class="container mx-auto px-4 py-6">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="game-font text-4xl md:text-7xl text-white mb-4 drop-shadow-2xl">🏆 TEAM ENGLISH CHAMPIONS 🏆</h1>
+            <p class="text-white text-lg md:text-2xl font-bold">Level 4 Multiplayer Classroom Game!</p>
+            <p class="text-yellow-200 text-sm md:text-lg mt-2">Perfect for all students - Teams compete together!</p>
+        </div>
+
+        <!-- Setup Screen -->
+        <div id="setupScreen" class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-3xl shadow-2xl p-8 mb-8 bounce-in">
+                <h2 class="game-font text-3xl text-center text-purple-600 mb-8">🎮 Game Setup</h2>
+                
+                <!-- Team Creation -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">Create Your Teams!</h3>
+                    <div class="flex flex-col md:flex-row gap-4 justify-center items-center mb-6">
+                        <input type="text" id="teamNameInput" placeholder="Enter team name..." class="px-4 py-3 border-2 border-purple-300 rounded-xl text-lg focus:border-purple-500 focus:outline-none">
+                        <button onclick="addTeam()" class="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-6 py-3 rounded-xl font-bold text-lg shadow-lg transform transition hover:scale-105">
+                            ➕ Add Team
+                        </button>
+                    </div>
+                    
+                    <div id="teamsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                        <!-- Teams will appear here -->
+                    </div>
+                    
+                    <div class="text-center">
+                        <button onclick="startGame()" id="startGameBtn" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-4 rounded-2xl font-bold text-xl shadow-lg transform transition hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                            🚀 Start Game Adventure!
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="hidden max-w-6xl mx-auto">
+            <!-- Game Controls -->
+            <div class="bg-white rounded-2xl shadow-2xl p-6 mb-6">
+                <div class="flex flex-col lg:flex-row justify-between items-center gap-4">
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-blue-600" id="timer">60</div>
+                        <div class="text-sm text-gray-600">Seconds Left</div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <h2 class="game-font text-2xl text-purple-600" id="currentActivity">Word Challenge</h2>
+                        <p class="text-gray-600">Round <span id="roundNumber">1</span> of 6</p>
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <button id="pauseBtn" onclick="pauseGame()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-semibold">
+                            ⏸️ Pause
+                        </button>
+                        <button onclick="nextRound()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold">
+                            ⏭️ Next Round
+                        </button>
+                        <button onclick="endGame()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold">
+                            🏁 End Game
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Scores -->
+            <div class="bg-white rounded-2xl shadow-2xl p-6 mb-6">
+                <h3 class="font-bold text-xl text-center text-purple-600 mb-4">🏆 Team Scores</h3>
+                <div id="teamScores" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <!-- Team scores will appear here -->
+                </div>
+            </div>
+
+            <!-- Challenge Area -->
+            <div class="bg-white rounded-3xl shadow-2xl p-8 mb-6 slide-up">
+                <div class="text-center mb-6">
+                    <div class="text-6xl mb-4" id="challengeIcon">📝</div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-4" id="challengeTitle">Team Challenge</h3>
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-6 text-white">
+                        <p class="text-xl font-semibold" id="challengeDescription">Get ready for an exciting challenge!</p>
+                    </div>
+                </div>
+                
+                <!-- Challenge Content -->
+                <div id="challengeContent" class="mb-6">
+                    <!-- Dynamic content will appear here -->
+                </div>
+                
+                <!-- Answer Input -->
+                <div class="text-center mb-6">
+                    <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+                        <select id="teamSelector" class="px-4 py-3 border-2 border-purple-300 rounded-xl text-lg focus:border-purple-500 focus:outline-none">
+                            <option value="">Select Team</option>
+                        </select>
+                        <input type="text" id="answerInput" placeholder="Enter answer..." class="px-4 py-3 border-2 border-purple-300 rounded-xl text-lg focus:border-purple-500 focus:outline-none">
+                        <button onclick="submitAnswer()" class="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-6 py-3 rounded-xl font-bold text-lg shadow-lg transform transition hover:scale-105">
+                            ✅ Submit Answer
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Instructions -->
+                <div class="bg-yellow-50 rounded-2xl p-6">
+                    <h4 class="font-bold text-lg text-yellow-800 mb-3">📋 Instructions:</h4>
+                    <div id="instructions" class="text-yellow-700">
+                        <p>• Teams take turns answering questions</p>
+                        <p>• Correct answers earn points</p>
+                        <p>• Work together and help each other</p>
+                        <p>• Have fun learning English!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="hidden max-w-4xl mx-auto">
+            <div class="bg-white rounded-3xl shadow-2xl p-8 text-center bounce-in">
+                <div class="text-8xl mb-6">🎉</div>
+                <h2 class="game-font text-4xl text-purple-600 mb-6">Game Complete!</h2>
+                
+                <div id="finalResults" class="mb-8">
+                    <!-- Final results will appear here -->
+                </div>
+                
+                <div class="flex gap-4 justify-center">
+                    <button onclick="playAgain()" class="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-xl shadow-lg transform transition hover:scale-105">
+                        🔄 Play Again
+                    </button>
+                    <button onclick="newGame()" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-4 rounded-2xl font-bold text-xl shadow-lg transform transition hover:scale-105">
+                        🆕 New Game
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class TeamEnglishGame {
+            constructor() {
+                this.teams = [];
+                this.currentRound = 0;
+                this.timer = 60;
+                this.isRunning = false;
+                this.timerInterval = null;
+                this.totalRounds = 6;
+                
+                this.activities = [
+                    {
+                        name: "Word Building",
+                        icon: "📝",
+                        description: "Create as many words as possible from the given letters!",
+                        type: "word_building"
+                    },
+                    {
+                        name: "Grammar Challenge",
+                        icon: "📚",
+                        description: "Fix the grammar mistakes in these sentences!",
+                        type: "grammar"
+                    },
+                    {
+                        name: "Vocabulary Race",
+                        icon: "🏃‍♂️",
+                        description: "Find synonyms and antonyms quickly!",
+                        type: "vocabulary"
+                    },
+                    {
+                        name: "Story Building",
+                        icon: "📖",
+                        description: "Continue the story with creative sentences!",
+                        type: "story"
+                    },
+                    {
+                        name: "Riddle Time",
+                        icon: "🧩",
+                        description: "Solve these English riddles and puzzles!",
+                        type: "riddles"
+                    },
+                    {
+                        name: "Quick Questions",
+                        icon: "⚡",
+                        description: "Answer rapid-fire English questions!",
+                        type: "quick_questions"
+                    }
+                ];
+                
+                this.challenges = {
+                    word_building: [
+                        { letters: "EDUCATION", target: 8, examples: ["CAT", "DOG", "DANCE", "OCEAN"] },
+                        { letters: "FRIENDSHIP", target: 10, examples: ["SHIP", "FISH", "FRIEND", "SPIN"] },
+                        { letters: "ADVENTURE", target: 9, examples: ["TURN", "DEAR", "NATURE", "UNDER"] }
+                    ],
+                    grammar: [
+                        { sentence: "She don't like pizza", correct: "She doesn't like pizza" },
+                        { sentence: "I have went to school", correct: "I have gone to school" },
+                        { sentence: "There is many books", correct: "There are many books" }
+                    ],
+                    vocabulary: [
+                        { word: "HAPPY", type: "synonym", answer: "joyful" },
+                        { word: "BIG", type: "antonym", answer: "small" },
+                        { word: "DIFFICULT", type: "synonym", answer: "hard" }
+                    ],
+                    story: [
+                        { start: "Once upon a time, there was a magical forest where..." },
+                        { start: "The young detective opened the mysterious door and saw..." },
+                        { start: "In the year 3000, children discovered that they could..." }
+                    ],
+                    riddles: [
+                        { question: "I have keys but no locks. I have space but no room. What am I?", answer: "keyboard" },
+                        { question: "What gets wet while drying?", answer: "towel" },
+                        { question: "I'm tall when I'm young, short when I'm old. What am I?", answer: "candle" }
+                    ],
+                    quick_questions: [
+                        { question: "What is the past tense of 'go'?", answer: "went" },
+                        { question: "What is the plural of 'child'?", answer: "children" },
+                        { question: "Complete: I ___ reading a book (present continuous)", answer: "am" }
+                    ]
+                };
+            }
+            
+            addTeam() {
+                const input = document.getElementById('teamNameInput');
+                const teamName = input.value.trim();
+                
+                if (teamName && !this.teams.find(team => team.name === teamName)) {
+                    this.teams.push({
+                        name: teamName,
+                        score: 0,
+                        color: this.getRandomColor()
+                    });
+                    
+                    input.value = '';
+                    this.updateTeamsList();
+                    this.updateStartButton();
+                }
+            }
+            
+            getRandomColor() {
+                const colors = [
+                    'from-red-400 to-red-600',
+                    'from-blue-400 to-blue-600',
+                    'from-green-400 to-green-600',
+                    'from-yellow-400 to-yellow-600',
+                    'from-purple-400 to-purple-600',
+                    'from-pink-400 to-pink-600',
+                    'from-indigo-400 to-indigo-600',
+                    'from-teal-400 to-teal-600'
+                ];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+            
+            updateTeamsList() {
+                const container = document.getElementById('teamsList');
+                container.innerHTML = this.teams.map((team, index) => `
+                    <div class="bg-gradient-to-r ${team.color} text-white p-4 rounded-xl shadow-lg">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-lg">${team.name}</span>
+                            <button onclick="game.removeTeam(${index})" class="bg-white text-red-500 px-2 py-1 rounded text-sm hover:bg-gray-100">
+                                ❌
+                            </button>
+                        </div>
+                        <div class="text-sm mt-2">Score: ${team.score}</div>
+                    </div>
+                `).join('');
+            }
+            
+            removeTeam(index) {
+                this.teams.splice(index, 1);
+                this.updateTeamsList();
+                this.updateStartButton();
+            }
+            
+            updateStartButton() {
+                const startBtn = document.getElementById('startGameBtn');
+                startBtn.disabled = this.teams.length < 2;
+            }
+            
+            startGame() {
+                if (this.teams.length < 2) return;
+                
+                document.getElementById('setupScreen').classList.add('hidden');
+                document.getElementById('gameScreen').classList.remove('hidden');
+                
+                this.currentRound = 0;
+                this.startRound();
+            }
+            
+            startRound() {
+                if (this.currentRound >= this.totalRounds) {
+                    this.showResults();
+                    return;
+                }
+                
+                const activity = this.activities[this.currentRound];
+                
+                document.getElementById('currentActivity').textContent = activity.name;
+                document.getElementById('roundNumber').textContent = this.currentRound + 1;
+                document.getElementById('challengeIcon').textContent = activity.icon;
+                document.getElementById('challengeTitle').textContent = activity.name;
+                document.getElementById('challengeDescription').textContent = activity.description;
+                
+                this.updateTeamScores();
+                this.updateTeamSelector();
+                this.loadChallenge(activity.type);
+                this.startTimer();
+            }
+            
+            loadChallenge(type) {
+                const challenges = this.challenges[type];
+                const challenge = challenges[Math.floor(Math.random() * challenges.length)];
+                const content = document.getElementById('challengeContent');
+                
+                switch(type) {
+                    case 'word_building':
+                        content.innerHTML = `
+                            <div class="text-center">
+                                <div class="bg-blue-100 rounded-2xl p-6 mb-4">
+                                    <h4 class="text-2xl font-bold text-blue-800 mb-4">Letters: ${challenge.letters}</h4>
+                                    <p class="text-blue-700">Make ${challenge.target} or more words!</p>
+                                </div>
+                                <div class="text-sm text-gray-600">
+                                    <p>Examples: ${challenge.examples.join(', ')}</p>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                        
+                    case 'grammar':
+                        content.innerHTML = `
+                            <div class="bg-red-100 rounded-2xl p-6">
+                                <h4 class="text-xl font-bold text-red-800 mb-4">Fix this sentence:</h4>
+                                <p class="text-2xl text-red-700 font-semibold">"${challenge.sentence}"</p>
+                            </div>
+                        `;
+                        break;
+                        
+                    case 'vocabulary':
+                        content.innerHTML = `
+                            <div class="bg-green-100 rounded-2xl p-6">
+                                <h4 class="text-xl font-bold text-green-800 mb-4">Find the ${challenge.type} of:</h4>
+                                <p class="text-3xl text-green-700 font-bold">${challenge.word}</p>
+                            </div>
+                        `;
+                        break;
+                        
+                    case 'story':
+                        content.innerHTML = `
+                            <div class="bg-purple-100 rounded-2xl p-6">
+                                <h4 class="text-xl font-bold text-purple-800 mb-4">Continue this story:</h4>
+                                <p class="text-lg text-purple-700">${challenge.start}</p>
+                            </div>
+                        `;
+                        break;
+                        
+                    case 'riddles':
+                        content.innerHTML = `
+                            <div class="bg-yellow-100 rounded-2xl p-6">
+                                <h4 class="text-xl font-bold text-yellow-800 mb-4">Solve this riddle:</h4>
+                                <p class="text-lg text-yellow-700">${challenge.question}</p>
+                            </div>
+                        `;
+                        break;
+                        
+                    case 'quick_questions':
+                        content.innerHTML = `
+                            <div class="bg-pink-100 rounded-2xl p-6">
+                                <h4 class="text-xl font-bold text-pink-800 mb-4">Quick Question:</h4>
+                                <p class="text-lg text-pink-700">${challenge.question}</p>
+                            </div>
+                        `;
+                        break;
+                }
+                
+                this.currentChallenge = challenge;
+            }
+            
+            updateTeamScores() {
+                const container = document.getElementById('teamScores');
+                container.innerHTML = this.teams.map(team => `
+                    <div class="bg-gradient-to-r ${team.color} text-white p-4 rounded-xl text-center">
+                        <div class="font-bold text-lg">${team.name}</div>
+                        <div class="text-2xl font-bold">${team.score}</div>
+                        <div class="text-sm">points</div>
+                    </div>
+                `).join('');
+            }
+            
+            updateTeamSelector() {
+                const selector = document.getElementById('teamSelector');
+                selector.innerHTML = '<option value="">Select Team</option>' + 
+                    this.teams.map((team, index) => `<option value="${index}">${team.name}</option>`).join('');
+            }
+            
+            startTimer() {
+                this.timer = 60;
+                this.isRunning = true;
+                this.updateTimerDisplay();
+                
+                this.timerInterval = setInterval(() => {
+                    if (this.isRunning && this.timer > 0) {
+                        this.timer--;
+                        this.updateTimerDisplay();
+                        
+                        if (this.timer === 0) {
+                            this.timeUp();
+                        }
+                    }
+                }, 1000);
+            }
+            
+            updateTimerDisplay() {
+                const timerElement = document.getElementById('timer');
+                timerElement.textContent = this.timer;
+                
+                if (this.timer <= 10) {
+                    timerElement.className = 'text-4xl font-bold timer-urgent';
+                } else if (this.timer <= 30) {
+                    timerElement.className = 'text-4xl font-bold text-yellow-600';
+                } else {
+                    timerElement.className = 'text-4xl font-bold text-blue-600';
+                }
+            }
+            
+            pauseGame() {
+                this.isRunning = !this.isRunning;
+                const pauseBtn = document.getElementById('pauseBtn');
+                pauseBtn.textContent = this.isRunning ? '⏸️ Pause' : '▶️ Resume';
+            }
+            
+            timeUp() {
+                clearInterval(this.timerInterval);
+                alert('⏰ Time\'s up! Moving to next round...');
+                setTimeout(() => this.nextRound(), 1000);
+            }
+            
+            submitAnswer() {
+                const teamIndex = document.getElementById('teamSelector').value;
+                const answer = document.getElementById('answerInput').value.trim().toLowerCase();
+                
+                if (teamIndex === '' || !answer) {
+                    alert('Please select a team and enter an answer!');
+                    return;
+                }
+                
+                const team = this.teams[teamIndex];
+                const correct = this.checkAnswer(answer);
+                
+                if (correct) {
+                    team.score += 10;
+                    alert(`🎉 Correct! ${team.name} gets 10 points!`);
+                } else {
+                    alert(`❌ Not quite right. The answer was: ${this.getCorrectAnswer()}`);
+                }
+                
+                document.getElementById('answerInput').value = '';
+                document.getElementById('teamSelector').value = '';
+                this.updateTeamScores();
+            }
+            
+            checkAnswer(answer) {
+                const challenge = this.currentChallenge;
+                const activity = this.activities[this.currentRound];
+                
+                switch(activity.type) {
+                    case 'grammar':
+                        return answer === challenge.correct.toLowerCase();
+                    case 'vocabulary':
+                    case 'riddles':
+                    case 'quick_questions':
+                        return answer === challenge.answer.toLowerCase();
+                    case 'word_building':
+                        return challenge.letters.toLowerCase().includes(answer) && answer.length >= 3;
+                    case 'story':
+                        return answer.length >= 10; // Any creative answer with 10+ characters
+                    default:
+                        return false;
+                }
+            }
+            
+            getCorrectAnswer() {
+                const challenge = this.currentChallenge;
+                const activity = this.activities[this.currentRound];
+                
+                switch(activity.type) {
+                    case 'grammar':
+                        return challenge.correct;
+                    case 'vocabulary':
+                    case 'riddles':
+                    case 'quick_questions':
+                        return challenge.answer;
+                    case 'word_building':
+                        return challenge.examples.join(', ');
+                    case 'story':
+                        return 'Any creative continuation!';
+                    default:
+                        return 'Various answers possible';
+                }
+            }
+            
+            nextRound() {
+                clearInterval(this.timerInterval);
+                this.currentRound++;
+                this.startRound();
+            }
+            
+            endGame() {
+                clearInterval(this.timerInterval);
+                this.showResults();
+            }
+            
+            showResults() {
+                document.getElementById('gameScreen').classList.add('hidden');
+                document.getElementById('resultsScreen').classList.remove('hidden');
+                
+                // Sort teams by score
+                const sortedTeams = [...this.teams].sort((a, b) => b.score - a.score);
+                
+                const resultsHTML = sortedTeams.map((team, index) => {
+                    const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🏅';
+                    const celebration = index === 0 ? 'winner-celebration' : '';
+                    
+                    return `
+                        <div class="bg-gradient-to-r ${team.color} text-white p-6 rounded-2xl mb-4 ${celebration}">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="text-4xl mr-4">${medal}</span>
+                                    <div>
+                                        <h3 class="text-2xl font-bold">${team.name}</h3>
+                                        <p class="text-lg">Final Score: ${team.score} points</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-sm">Position</div>
+                                    <div class="text-3xl font-bold">#${index + 1}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                document.getElementById('finalResults').innerHTML = resultsHTML;
+            }
+            
+            playAgain() {
+                // Reset scores but keep teams
+                this.teams.forEach(team => team.score = 0);
+                this.currentRound = 0;
+                
+                document.getElementById('resultsScreen').classList.add('hidden');
+                document.getElementById('gameScreen').classList.remove('hidden');
+                
+                this.startRound();
+            }
+            
+            newGame() {
+                // Reset everything
+                this.teams = [];
+                this.currentRound = 0;
+                
+                document.getElementById('resultsScreen').classList.add('hidden');
+                document.getElementById('setupScreen').classList.remove('hidden');
+                
+                this.updateTeamsList();
+                this.updateStartButton();
+            }
+        }
+        
+        // Global game instance
+        const game = new TeamEnglishGame();
+        
+        // Global functions
+        function addTeam() {
+            game.addTeam();
+        }
+        
+        function startGame() {
+            game.startGame();
+        }
+        
+        function pauseGame() {
+            game.pauseGame();
+        }
+        
+        function nextRound() {
+            game.nextRound();
+        }
+        
+        function endGame() {
+            game.endGame();
+        }
+        
+        function submitAnswer() {
+            game.submitAnswer();
+        }
+        
+        function playAgain() {
+            game.playAgain();
+        }
+        
+        function newGame() {
+            game.newGame();
+        }
+        
+        // Enter key support for inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('teamNameInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addTeam();
+                }
+            });
+            
+            document.getElementById('answerInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    submitAnswer();
+                }
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9634762ba06996b4',t:'MTc1MzIwMzI4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
