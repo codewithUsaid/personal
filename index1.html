@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Classification Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .drag-item {
+            transition: all 0.3s ease;
+        }
+        .drag-item:hover {
+            transform: scale(1.05);
+        }
+        .drag-item.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+        .drop-zone {
+            transition: all 0.3s ease;
+        }
+        .drop-zone.drag-over {
+            background-color: #dbeafe;
+            border-color: #3b82f6;
+            transform: scale(1.02);
+        }
+        .correct-feedback {
+            animation: bounce 0.6s ease-in-out;
+        }
+        .incorrect-feedback {
+            animation: shake 0.5s ease-in-out;
+        }
+        @keyframes bounce {
+            0%, 20%, 60%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            80% { transform: translateY(-5px); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-100 to-blue-100 min-h-screen p-4">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">🐾 Animal Classification Game</h1>
+            <p class="text-lg text-gray-600">Drag each animal to its correct category!</p>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-gray-700">Progress</h2>
+                <div class="text-lg font-bold text-blue-600">
+                    <span id="score">0</span> / <span id="total">12</span>
+                </div>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-4">
+                <div id="progress-bar" class="progress-bar bg-gradient-to-r from-green-400 to-blue-500 h-4 rounded-full" style="width: 0%"></div>
+            </div>
+            <div class="mt-2 text-sm text-gray-600">
+                <span id="progress-text">Get started by dragging an animal!</span>
+            </div>
+        </div>
+
+        <!-- Game Area -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Animals to Sort -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4 text-center">Animals to Sort</h3>
+                    <div id="animals-container" class="space-y-3">
+                        <!-- Animals will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="lg:col-span-3">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Mammals -->
+                    <div class="drop-zone bg-white rounded-lg shadow-lg p-6 border-2 border-dashed border-gray-300" data-category="mammals">
+                        <div class="text-center mb-4">
+                            <div class="text-4xl mb-2">🐘</div>
+                            <h3 class="text-xl font-semibold text-purple-600">Mammals</h3>
+                            <p class="text-sm text-gray-500">Warm-blooded, fur/hair, milk</p>
+                        </div>
+                        <div class="animals-in-category min-h-[200px] space-y-2">
+                            <!-- Sorted animals will appear here -->
+                        </div>
+                    </div>
+
+                    <!-- Reptiles -->
+                    <div class="drop-zone bg-white rounded-lg shadow-lg p-6 border-2 border-dashed border-gray-300" data-category="reptiles">
+                        <div class="text-center mb-4">
+                            <div class="text-4xl mb-2">🦎</div>
+                            <h3 class="text-xl font-semibold text-green-600">Reptiles</h3>
+                            <p class="text-sm text-gray-500">Cold-blooded, scales, lay eggs</p>
+                        </div>
+                        <div class="animals-in-category min-h-[200px] space-y-2">
+                            <!-- Sorted animals will appear here -->
+                        </div>
+                    </div>
+
+                    <!-- Amphibians -->
+                    <div class="drop-zone bg-white rounded-lg shadow-lg p-6 border-2 border-dashed border-gray-300" data-category="amphibians">
+                        <div class="text-center mb-4">
+                            <div class="text-4xl mb-2">🐸</div>
+                            <h3 class="text-xl font-semibold text-blue-600">Amphibians</h3>
+                            <p class="text-sm text-gray-500">Live in water & land, moist skin</p>
+                        </div>
+                        <div class="animals-in-category min-h-[200px] space-y-2">
+                            <!-- Sorted animals will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feedback Message -->
+        <div id="feedback" class="fixed top-4 right-4 p-4 rounded-lg shadow-lg hidden z-50">
+            <div id="feedback-content" class="flex items-center space-x-2">
+                <span id="feedback-icon"></span>
+                <span id="feedback-text"></span>
+            </div>
+        </div>
+
+        <!-- Reset Button -->
+        <div class="text-center mt-8">
+            <button id="reset-btn" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200">
+                🔄 Reset Game
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Game data
+        const animals = [
+            { name: "Lion", emoji: "🦁", category: "mammals" },
+            { name: "Elephant", emoji: "🐘", category: "mammals" },
+            { name: "Dolphin", emoji: "🐬", category: "mammals" },
+            { name: "Bat", emoji: "🦇", category: "mammals" },
+            { name: "Snake", emoji: "🐍", category: "reptiles" },
+            { name: "Lizard", emoji: "🦎", category: "reptiles" },
+            { name: "Turtle", emoji: "🐢", category: "reptiles" },
+            { name: "Crocodile", emoji: "🐊", category: "reptiles" },
+            { name: "Frog", emoji: "🐸", category: "amphibians" },
+            { name: "Toad", emoji: "🐸", category: "amphibians" },
+            { name: "Salamander", emoji: "🦎", category: "amphibians" },
+            { name: "Newt", emoji: "🦎", category: "amphibians" }
+        ];
+
+        let score = 0;
+        let totalAnimals = animals.length;
+        let gameComplete = false;
+
+        // Initialize game
+        function initGame() {
+            const container = document.getElementById('animals-container');
+            container.innerHTML = '';
+            
+            // Shuffle animals for variety
+            const shuffledAnimals = [...animals].sort(() => Math.random() - 0.5);
+            
+            shuffledAnimals.forEach((animal, index) => {
+                const animalElement = document.createElement('div');
+                animalElement.className = 'drag-item bg-gradient-to-r from-yellow-200 to-orange-200 p-3 rounded-lg cursor-move shadow-md border border-yellow-300';
+                animalElement.draggable = true;
+                animalElement.dataset.category = animal.category;
+                animalElement.dataset.name = animal.name;
+                animalElement.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span class="text-2xl">${animal.emoji}</span>
+                        <span class="font-medium text-gray-700">${animal.name}</span>
+                    </div>
+                `;
+                
+                // Add drag event listeners
+                animalElement.addEventListener('dragstart', handleDragStart);
+                animalElement.addEventListener('dragend', handleDragEnd);
+                
+                container.appendChild(animalElement);
+            });
+
+            // Reset progress
+            score = 0;
+            gameComplete = false;
+            updateProgress();
+            
+            // Clear categories
+            document.querySelectorAll('.animals-in-category').forEach(category => {
+                category.innerHTML = '';
+            });
+        }
+
+        // Drag and drop handlers
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', '');
+            e.target.classList.add('dragging');
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        // Drop zone event listeners
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+            zone.addEventListener('dragover', handleDragOver);
+            zone.addEventListener('drop', handleDrop);
+            zone.addEventListener('dragenter', handleDragEnter);
+            zone.addEventListener('dragleave', handleDragLeave);
+        });
+
+        function handleDragOver(e) {
+            e.preventDefault();
+        }
+
+        function handleDragEnter(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            if (!e.currentTarget.contains(e.relatedTarget)) {
+                e.currentTarget.classList.remove('drag-over');
+            }
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag-over');
+            
+            const draggedElement = document.querySelector('.dragging');
+            if (!draggedElement) return;
+            
+            const dropCategory = e.currentTarget.dataset.category;
+            const animalCategory = draggedElement.dataset.category;
+            const animalName = draggedElement.dataset.name;
+            
+            if (dropCategory === animalCategory) {
+                // Correct placement
+                showFeedback(true, `Correct! ${animalName} is a ${dropCategory.slice(0, -1)}!`);
+                
+                // Move to category
+                const categoryContainer = e.currentTarget.querySelector('.animals-in-category');
+                draggedElement.className = 'bg-green-100 border-green-300 p-2 rounded-lg shadow-sm border correct-feedback';
+                draggedElement.draggable = false;
+                categoryContainer.appendChild(draggedElement);
+                
+                score++;
+                updateProgress();
+                
+                if (score === totalAnimals) {
+                    setTimeout(() => {
+                        showFeedback(true, "🎉 Congratulations! You've classified all animals correctly!");
+                        gameComplete = true;
+                    }, 500);
+                }
+            } else {
+                // Incorrect placement
+                showFeedback(false, `Not quite! ${animalName} is not a ${dropCategory.slice(0, -1)}.`);
+                draggedElement.classList.add('incorrect-feedback');
+                setTimeout(() => {
+                    draggedElement.classList.remove('incorrect-feedback');
+                }, 500);
+            }
+        }
+
+        function showFeedback(isCorrect, message) {
+            const feedback = document.getElementById('feedback');
+            const icon = document.getElementById('feedback-icon');
+            const text = document.getElementById('feedback-text');
+            
+            if (isCorrect) {
+                feedback.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-lg bg-green-500 text-white z-50';
+                icon.textContent = '✅';
+            } else {
+                feedback.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-lg bg-red-500 text-white z-50';
+                icon.textContent = '❌';
+            }
+            
+            text.textContent = message;
+            feedback.classList.remove('hidden');
+            
+            setTimeout(() => {
+                feedback.classList.add('hidden');
+            }, 3000);
+        }
+
+        function updateProgress() {
+            const scoreElement = document.getElementById('score');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            
+            scoreElement.textContent = score;
+            const percentage = (score / totalAnimals) * 100;
+            progressBar.style.width = percentage + '%';
+            
+            if (score === 0) {
+                progressText.textContent = "Get started by dragging an animal!";
+            } else if (score === totalAnimals) {
+                progressText.textContent = "Perfect! All animals classified correctly! 🎉";
+            } else {
+                progressText.textContent = `Great progress! ${totalAnimals - score} animals left to classify.`;
+            }
+        }
+
+        // Reset button
+        document.getElementById('reset-btn').addEventListener('click', initGame);
+
+        // Initialize the game when page loads
+        initGame();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'963475a9957096b4',t:'MTc1MzIwMzI2My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
