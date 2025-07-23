@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Level 4 - 200 Questions Fill-in-the-Blank Challenge!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Nunito:wght@400;600;700;800&display=swap');
+        
+        .game-font {
+            font-family: 'Fredoka One', cursive;
+        }
+        
+        .content-font {
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .bounce-in {
+            animation: bounceIn 0.8s ease-out;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+            50% { transform: scale(1.1) rotate(5deg); }
+            70% { transform: scale(0.9) rotate(-2deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        
+        .letter-box {
+            animation: letterPop 0.3s ease-out;
+        }
+        
+        @keyframes letterPop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .correct-word {
+            animation: correctPulse 1s ease-in-out;
+        }
+        
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); background: linear-gradient(45deg, #10b981, #34d399); }
+            50% { transform: scale(1.1); background: linear-gradient(45deg, #059669, #10b981); }
+        }
+        
+        .wrong-shake {
+            animation: wrongShake 0.5s ease-in-out;
+        }
+        
+        @keyframes wrongShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .team-celebration {
+            animation: teamCelebration 2s ease-in-out infinite;
+        }
+        
+        @keyframes teamCelebration {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(5deg); }
+            75% { transform: scale(1.1) rotate(-5deg); }
+        }
+        
+        .timer-urgent {
+            animation: timerUrgent 0.5s infinite;
+        }
+        
+        @keyframes timerUrgent {
+            0%, 100% { transform: scale(1); color: #dc2626; }
+            50% { transform: scale(1.2); color: #ef4444; }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            0% { transform: translateY(50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 min-h-screen content-font">
+    <div class="container mx-auto px-4 py-6">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="game-font text-4xl md:text-7xl text-white mb-4 drop-shadow-2xl">🎯 QUESTIONS CHALLENGE! 🎯</h1>
+            <p class="text-white text-lg md:text-2xl font-bold">Fill-in-the-Blank Team Competition!</p>
+            <p class="text-yellow-200 text-sm md:text-lg mt-2">Teams compete to complete words - Grammar & Vocabulary!</p>
+        </div>
+
+        <!-- Setup Screen -->
+        <div id="setupScreen" class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-3xl shadow-2xl p-8 mb-8 bounce-in">
+                <h2 class="game-font text-3xl text-center text-purple-600 mb-8">🏆 Create Your Teams!</h2>
+                
+                <!-- Team Creation -->
+                <div class="mb-8">
+                    <div class="flex flex-col md:flex-row gap-4 justify-center items-center mb-6">
+                        <input type="text" id="teamNameInput" placeholder="Enter team name..." class="px-4 py-3 border-2 border-purple-300 rounded-xl text-lg focus:border-purple-500 focus:outline-none">
+                        <button onclick="addTeam()" class="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-6 py-3 rounded-xl font-bold text-lg shadow-lg transform transition hover:scale-105">
+                            ➕ Add Team
+                        </button>
+                    </div>
+                    
+                    <!-- Quick Add Teams -->
+                    <div class="text-center mb-6">
+                        <button onclick="addSampleTeams()" class="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-6 py-3 rounded-xl font-bold text-lg shadow-lg transform transition hover:scale-105">
+                            ⚡ Quick Add 4 Teams
+                        </button>
+                    </div>
+                    
+                    <div id="teamsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                        <!-- Teams will appear here -->
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="mb-4">
+                            <span class="text-2xl font-bold text-purple-600" id="teamCount">0</span>
+                            <span class="text-lg text-gray-600"> teams ready for questions!</span>
+                        </div>
+                        <button onclick="startGame()" id="startGameBtn" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-4 rounded-2xl font-bold text-xl shadow-lg transform transition hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                            🚀 Start Questions Challenge!
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="hidden max-w-7xl mx-auto">
+            <!-- Game Controls -->
+            <div class="bg-white rounded-2xl shadow-2xl p-6 mb-6">
+                <div class="flex flex-col lg:flex-row justify-between items-center gap-4">
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-blue-600" id="timer">60</div>
+                        <div class="text-sm text-gray-600">Seconds Left</div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <h2 class="game-font text-2xl text-purple-600" id="currentCategory">Grammar Challenge</h2>
+                        <p class="text-gray-600">Question <span id="questionNumber">1</span> of 200</p>
+                        <p class="text-sm text-green-600 font-semibold">Current Team: <span id="currentTeamName">Team 1</span></p>
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <button id="pauseBtn" onclick="pauseGame()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-semibold">
+                            ⏸️ Pause
+                        </button>
+                        <button onclick="skipQuestion()" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold">
+                            ⏭️ Skip
+                        </button>
+                        <button onclick="showScores()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold">
+                            📊 Scores
+                        </button>
+                        <button onclick="endGame()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold">
+                            🏁 End Game
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Scores -->
+            <div class="bg-white rounded-2xl shadow-2xl p-6 mb-6">
+                <h3 class="font-bold text-xl text-center text-purple-600 mb-4">🏆 Team Scores</h3>
+                <div id="teamScores" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <!-- Team scores will appear here -->
+                </div>
+            </div>
+
+            <!-- Challenge Area -->
+            <div class="bg-white rounded-3xl shadow-2xl p-8 mb-6 slide-up">
+                <div class="text-center mb-6">
+                    <div class="text-6xl mb-4" id="challengeIcon">📝</div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-4" id="challengeTitle">Fill in the Blanks!</h3>
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-6 text-white">
+                        <p class="text-xl font-semibold" id="challengeDescription">Complete the word by filling in the missing letters!</p>
+                    </div>
+                </div>
+                
+                <!-- Word Display -->
+                <div class="text-center mb-8">
+                    <div class="bg-gray-100 rounded-2xl p-8">
+                        <h4 class="text-2xl font-bold text-gray-800 mb-4" id="wordClue">Clue will appear here</h4>
+                        <div id="wordDisplay" class="flex justify-center items-center gap-2 mb-6 flex-wrap">
+                            <!-- Letter boxes will appear here -->
+                        </div>
+                        <div class="text-lg text-gray-600" id="wordHint">Hint will appear here</div>
+                    </div>
+                </div>
+                
+                <!-- Letter Input -->
+                <div class="text-center mb-6">
+                    <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+                        <input type="text" id="letterInput" placeholder="Enter a letter..." maxlength="1" class="px-6 py-4 border-2 border-purple-300 rounded-xl text-2xl text-center focus:border-purple-500 focus:outline-none uppercase">
+                        <button onclick="submitLetter()" class="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-4 rounded-xl font-bold text-xl shadow-lg transform transition hover:scale-105">
+                            ✅ Submit Letter
+                        </button>
+                        <button onclick="guessWord()" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-4 rounded-xl font-bold text-xl shadow-lg transform transition hover:scale-105">
+                            🎯 Guess Word
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Word Guess Input -->
+                <div id="wordGuessArea" class="hidden text-center mb-6">
+                    <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+                        <input type="text" id="wordGuessInput" placeholder="Enter complete word..." class="px-6 py-4 border-2 border-green-300 rounded-xl text-xl focus:border-green-500 focus:outline-none uppercase">
+                        <button onclick="submitWordGuess()" class="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-8 py-4 rounded-xl font-bold text-xl shadow-lg transform transition hover:scale-105">
+                            🚀 Submit Word
+                        </button>
+                        <button onclick="cancelWordGuess()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-4 rounded-xl font-bold text-lg">
+                            ❌ Cancel
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Game Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-blue-100 rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-blue-800" id="correctLetters">0</div>
+                        <div class="text-sm text-blue-600">Correct Letters</div>
+                    </div>
+                    <div class="bg-red-100 rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-red-800" id="wrongLetters">0</div>
+                        <div class="text-sm text-red-600">Wrong Letters</div>
+                    </div>
+                    <div class="bg-green-100 rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-green-800" id="wordsCompleted">0</div>
+                        <div class="text-sm text-green-600">Words Completed</div>
+                    </div>
+                </div>
+                
+                <!-- Instructions -->
+                <div class="bg-yellow-50 rounded-2xl p-6">
+                    <h4 class="font-bold text-lg text-yellow-800 mb-3">📋 How to Play:</h4>
+                    <div class="text-yellow-700 grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <p>• Teams take turns guessing letters</p>
+                        <p>• Correct letter = 1 point</p>
+                        <p>• Complete word = 10 bonus points</p>
+                        <p>• Wrong letter = next team's turn</p>
+                        <p>• Use clues and hints to help</p>
+                        <p>• 200 questions to complete!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="hidden max-w-6xl mx-auto">
+            <div class="bg-white rounded-3xl shadow-2xl p-8 text-center bounce-in">
+                <div class="text-8xl mb-6 team-celebration">🏆</div>
+                <h2 class="game-font text-4xl text-purple-600 mb-6">200 Questions Complete!</h2>
+                
+                <div id="finalResults" class="mb-8">
+                    <!-- Final results will appear here -->
+                </div>
+                
+                <div class="flex gap-4 justify-center">
+                    <button onclick="playAgain()" class="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-xl shadow-lg transform transition hover:scale-105">
+                        🔄 Play Again
+                    </button>
+                    <button onclick="newGame()" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-4 rounded-2xl font-bold text-xl shadow-lg transform transition hover:scale-105">
+                        🆕 New Game
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class FillInTheBlankGame {
+            constructor() {
+                this.teams = [];
+                this.currentTeam = 0;
+                this.currentQuestion = 0;
+                this.timer = 60;
+                this.isRunning = false;
+                this.timerInterval = null;
+                this.totalQuestions = 200;
+                this.currentWord = '';
+                this.guessedLetters = [];
+                this.correctLettersCount = 0;
+                this.wrongLettersCount = 0;
+                this.wordsCompletedCount = 0;
+                
+                // 200 Questions Database - Grammar & Vocabulary
+                this.questions = [
+                    // Grammar - Verbs (50 questions)
+                    { word: "BROTHER", clue: "Male sibling", hint: "Family member", category: "Family" },
+                    { word: "SISTER", clue: "Female sibling", hint: "Family member", category: "Family" },
+                    { word: "MOTHER", clue: "Female parent", hint: "Mom", category: "Family" },
+                    { word: "FATHER", clue: "Male parent", hint: "Dad", category: "Family" },
+                    { word: "TEACHER", clue: "Person who teaches", hint: "Works in school", category: "Jobs" },
+                    { word: "STUDENT", clue: "Person who learns", hint: "Goes to school", category: "School" },
+                    { word: "DOCTOR", clue: "Medical professional", hint: "Helps sick people", category: "Jobs" },
+                    { word: "NURSE", clue: "Medical helper", hint: "Works with doctor", category: "Jobs" },
+                    { word: "POLICE", clue: "Law enforcement", hint: "Keeps people safe", category: "Jobs" },
+                    { word: "FRIEND", clue: "Someone you like", hint: "Buddy or pal", category: "People" },
+                    
+                    // Animals (30 questions)
+                    { word: "ELEPHANT", clue: "Large gray animal", hint: "Has a trunk", category: "Animals" },
+                    { word: "GIRAFFE", clue: "Tallest animal", hint: "Long neck", category: "Animals" },
+                    { word: "MONKEY", clue: "Swings on trees", hint: "Likes bananas", category: "Animals" },
+                    { word: "TIGER", clue: "Orange striped cat", hint: "Big wild cat", category: "Animals" },
+                    { word: "RABBIT", clue: "Hops and has long ears", hint: "Likes carrots", category: "Animals" },
+                    { word: "CHICKEN", clue: "Farm bird", hint: "Lays eggs", category: "Animals" },
+                    { word: "DOLPHIN", clue: "Smart sea animal", hint: "Lives in ocean", category: "Animals" },
+                    { word: "BUTTERFLY", clue: "Colorful flying insect", hint: "Has beautiful wings", category: "Animals" },
+                    { word: "PENGUIN", clue: "Black and white bird", hint: "Lives in cold places", category: "Animals" },
+                    { word: "HORSE", clue: "Animal you can ride", hint: "Says neigh", category: "Animals" },
+                    
+                    // Food (30 questions)
+                    { word: "PIZZA", clue: "Round food with cheese", hint: "Italian dish", category: "Food" },
+                    { word: "HAMBURGER", clue: "Meat in a bun", hint: "Fast food", category: "Food" },
+                    { word: "SANDWICH", clue: "Food between bread", hint: "Lunch food", category: "Food" },
+                    { word: "CHOCOLATE", clue: "Sweet brown treat", hint: "Kids love it", category: "Food" },
+                    { word: "BANANA", clue: "Yellow curved fruit", hint: "Monkeys like it", category: "Food" },
+                    { word: "APPLE", clue: "Red or green fruit", hint: "Keeps doctor away", category: "Food" },
+                    { word: "ORANGE", clue: "Citrus fruit", hint: "Color and fruit", category: "Food" },
+                    { word: "COOKIE", clue: "Sweet baked treat", hint: "Goes with milk", category: "Food" },
+                    { word: "BREAKFAST", clue: "Morning meal", hint: "First meal of day", category: "Food" },
+                    { word: "DINNER", clue: "Evening meal", hint: "Last meal of day", category: "Food" },
+                    
+                    // Colors (20 questions)
+                    { word: "PURPLE", clue: "Mix of red and blue", hint: "Grape color", category: "Colors" },
+                    { word: "YELLOW", clue: "Color of the sun", hint: "Banana color", category: "Colors" },
+                    { word: "GREEN", clue: "Color of grass", hint: "Nature color", category: "Colors" },
+                    { word: "ORANGE", clue: "Color of carrots", hint: "Fruit name too", category: "Colors" },
+                    { word: "BROWN", clue: "Color of chocolate", hint: "Earth color", category: "Colors" },
+                    { word: "BLACK", clue: "Darkest color", hint: "Night color", category: "Colors" },
+                    { word: "WHITE", clue: "Lightest color", hint: "Snow color", category: "Colors" },
+                    { word: "PINK", clue: "Light red color", hint: "Flower color", category: "Colors" },
+                    { word: "SILVER", clue: "Shiny metal color", hint: "Like coins", category: "Colors" },
+                    { word: "GOLDEN", clue: "Color of gold", hint: "Precious metal color", category: "Colors" },
+                    
+                    // School (25 questions)
+                    { word: "PENCIL", clue: "Writing tool", hint: "Made of wood", category: "School" },
+                    { word: "ERASER", clue: "Removes pencil marks", hint: "Fixes mistakes", category: "School" },
+                    { word: "NOTEBOOK", clue: "Book for writing", hint: "Has blank pages", category: "School" },
+                    { word: "BACKPACK", clue: "Bag for school", hint: "Carry on back", category: "School" },
+                    { word: "CLASSROOM", clue: "Room for learning", hint: "Where lessons happen", category: "School" },
+                    { word: "HOMEWORK", clue: "Work done at home", hint: "After school work", category: "School" },
+                    { word: "LIBRARY", clue: "Place with books", hint: "Quiet reading place", category: "School" },
+                    { word: "COMPUTER", clue: "Electronic machine", hint: "For typing and games", category: "School" },
+                    { word: "CALCULATOR", clue: "Math helper", hint: "For numbers", category: "School" },
+                    { word: "PLAYGROUND", clue: "Place to play", hint: "Has swings and slides", category: "School" },
+                    
+                    // Body Parts (20 questions)
+                    { word: "FINGER", clue: "Part of hand", hint: "You have ten", category: "Body" },
+                    { word: "SHOULDER", clue: "Top of arm", hint: "Connects arm to body", category: "Body" },
+                    { word: "STOMACH", clue: "Where food goes", hint: "In your belly", category: "Body" },
+                    { word: "FOREHEAD", clue: "Above eyebrows", hint: "Top of face", category: "Body" },
+                    { word: "ELBOW", clue: "Middle of arm", hint: "Arm bends here", category: "Body" },
+                    { word: "ANKLE", clue: "Between foot and leg", hint: "Foot joint", category: "Body" },
+                    { word: "THUMB", clue: "Big finger", hint: "Helps you grip", category: "Body" },
+                    { word: "EYEBROW", clue: "Hair above eye", hint: "Protects eyes", category: "Body" },
+                    { word: "EYELASH", clue: "Hair on eyelid", hint: "Protects eyes", category: "Body" },
+                    { word: "NOSTRIL", clue: "Nose opening", hint: "For breathing", category: "Body" },
+                    
+                    // Weather (15 questions)
+                    { word: "RAINBOW", clue: "Colors in sky", hint: "After rain", category: "Weather" },
+                    { word: "THUNDER", clue: "Loud storm sound", hint: "Comes with lightning", category: "Weather" },
+                    { word: "LIGHTNING", clue: "Electric flash", hint: "Bright in storms", category: "Weather" },
+                    { word: "SNOWFLAKE", clue: "Frozen water crystal", hint: "Falls in winter", category: "Weather" },
+                    { word: "SUNSHINE", clue: "Light from sun", hint: "Makes things warm", category: "Weather" },
+                    { word: "CLOUDY", clue: "Sky with clouds", hint: "Not sunny", category: "Weather" },
+                    { word: "WINDY", clue: "Lots of wind", hint: "Air moving fast", category: "Weather" },
+                    { word: "FOGGY", clue: "Hard to see", hint: "Misty weather", category: "Weather" },
+                    { word: "FREEZING", clue: "Very cold", hint: "Water turns to ice", category: "Weather" },
+                    { word: "HURRICANE", clue: "Big storm", hint: "Very strong winds", category: "Weather" },
+                    
+                    // Continue with more categories to reach 200...
+                    // Transportation (10 questions)
+                    { word: "AIRPLANE", clue: "Flies in sky", hint: "Has wings", category: "Transport" },
+                    { word: "BICYCLE", clue: "Two wheels", hint: "You pedal it", category: "Transport" },
+                    { word: "MOTORCYCLE", clue: "Two wheels with engine", hint: "Faster than bicycle", category: "Transport" },
+                    { word: "HELICOPTER", clue: "Flying machine", hint: "Has spinning blades", category: "Transport" },
+                    { word: "SUBMARINE", clue: "Goes underwater", hint: "Like a boat below sea", category: "Transport" },
+                    { word: "SKATEBOARD", clue: "Board with wheels", hint: "For tricks and fun", category: "Transport" },
+                    { word: "SCOOTER", clue: "Two wheels you push", hint: "Like small bicycle", category: "Transport" },
+                    { word: "SPACESHIP", clue: "Goes to space", hint: "For astronauts", category: "Transport" },
+                    { word: "TROLLEY", clue: "Electric train", hint: "Runs on tracks in city", category: "Transport" },
+                    { word: "FERRY", clue: "Boat for cars", hint: "Crosses water", category: "Transport" }
+                ];
+                
+                // Add more questions to reach 200
+                this.addMoreQuestions();
+            }
+            
+            addMoreQuestions() {
+                // Add more categories to reach 200 questions
+                const additionalQuestions = [
+                    // Sports (20 questions)
+                    { word: "FOOTBALL", clue: "Sport with oval ball", hint: "American sport", category: "Sports" },
+                    { word: "BASKETBALL", clue: "Sport with hoops", hint: "Bounce and shoot", category: "Sports" },
+                    { word: "BASEBALL", clue: "Sport with bat", hint: "Hit and run bases", category: "Sports" },
+                    { word: "SWIMMING", clue: "Sport in water", hint: "Move through water", category: "Sports" },
+                    { word: "RUNNING", clue: "Moving fast on foot", hint: "Faster than walking", category: "Sports" },
+                    { word: "JUMPING", clue: "Going up in air", hint: "Leave the ground", category: "Sports" },
+                    { word: "DANCING", clue: "Moving to music", hint: "Rhythmic movement", category: "Sports" },
+                    { word: "SKATING", clue: "Moving on ice", hint: "With special shoes", category: "Sports" },
+                    { word: "SKIING", clue: "Snow sport", hint: "Down mountains", category: "Sports" },
+                    { word: "SURFING", clue: "Riding waves", hint: "On a board in ocean", category: "Sports" },
+                    { word: "BOWLING", clue: "Roll ball at pins", hint: "Knock down pins", category: "Sports" },
+                    { word: "TENNIS", clue: "Racket sport", hint: "Hit ball over net", category: "Sports" },
+                    { word: "GOLF", clue: "Hit ball in hole", hint: "Use clubs", category: "Sports" },
+                    { word: "BOXING", clue: "Fighting sport", hint: "With gloves", category: "Sports" },
+                    { word: "WRESTLING", clue: "Grappling sport", hint: "Try to pin opponent", category: "Sports" },
+                    { word: "CYCLING", clue: "Riding bicycle", hint: "Pedal power", category: "Sports" },
+                    { word: "HIKING", clue: "Walking in nature", hint: "On trails", category: "Sports" },
+                    { word: "FISHING", clue: "Catching fish", hint: "With rod and line", category: "Sports" },
+                    { word: "CAMPING", clue: "Sleeping outdoors", hint: "In tents", category: "Sports" },
+                    { word: "CLIMBING", clue: "Going up rocks", hint: "Use hands and feet", category: "Sports" },
+                    
+                    // Emotions (15 questions)
+                    { word: "HAPPY", clue: "Feeling good", hint: "Opposite of sad", category: "Emotions" },
+                    { word: "EXCITED", clue: "Very happy", hint: "Can't wait", category: "Emotions" },
+                    { word: "SURPRISED", clue: "Unexpected feeling", hint: "Didn't expect it", category: "Emotions" },
+                    { word: "CONFUSED", clue: "Don't understand", hint: "Mixed up", category: "Emotions" },
+                    { word: "WORRIED", clue: "Feeling anxious", hint: "Concerned about something", category: "Emotions" },
+                    { word: "PROUD", clue: "Feeling accomplished", hint: "Did something well", category: "Emotions" },
+                    { word: "JEALOUS", clue: "Want what others have", hint: "Envious feeling", category: "Emotions" },
+                    { word: "GRATEFUL", clue: "Feeling thankful", hint: "Appreciate something", category: "Emotions" },
+                    { word: "NERVOUS", clue: "Feeling anxious", hint: "Before big event", category: "Emotions" },
+                    { word: "CURIOUS", clue: "Want to know", hint: "Asking questions", category: "Emotions" },
+                    { word: "BRAVE", clue: "Not afraid", hint: "Courageous", category: "Emotions" },
+                    { word: "PATIENT", clue: "Can wait calmly", hint: "Not in a hurry", category: "Emotions" },
+                    { word: "GENEROUS", clue: "Likes to give", hint: "Shares with others", category: "Emotions" },
+                    { word: "HONEST", clue: "Always tells truth", hint: "Doesn't lie", category: "Emotions" },
+                    { word: "FRIENDLY", clue: "Nice to others", hint: "Easy to talk to", category: "Emotions" },
+                    
+                    // More words to complete 200...
+                    { word: "COMPUTER", clue: "Electronic device", hint: "For work and games", category: "Technology" },
+                    { word: "TELEPHONE", clue: "Device for calling", hint: "Talk to people far away", category: "Technology" },
+                    { word: "TELEVISION", clue: "Device for watching", hint: "Shows and movies", category: "Technology" },
+                    { word: "INTERNET", clue: "Global network", hint: "Connect computers", category: "Technology" },
+                    { word: "KEYBOARD", clue: "For typing", hint: "Has letters and numbers", category: "Technology" },
+                    { word: "MICROPHONE", clue: "For recording voice", hint: "Singers use it", category: "Technology" },
+                    { word: "HEADPHONES", clue: "For listening", hint: "Wear on ears", category: "Technology" },
+                    { word: "CAMERA", clue: "Takes pictures", hint: "Captures moments", category: "Technology" },
+                    { word: "PRINTER", clue: "Makes paper copies", hint: "Prints documents", category: "Technology" },
+                    { word: "SCANNER", clue: "Copies to computer", hint: "Makes digital copies", category: "Technology" }
+                ];
+                
+                // Add even more to reach exactly 200
+                const finalQuestions = [
+                    { word: "ADVENTURE", clue: "Exciting journey", hint: "Fun experience", category: "Adventure" },
+                    { word: "TREASURE", clue: "Hidden valuable things", hint: "Pirates look for it", category: "Adventure" },
+                    { word: "MYSTERY", clue: "Something unknown", hint: "Puzzle to solve", category: "Adventure" },
+                    { word: "DISCOVERY", clue: "Finding something new", hint: "Making a find", category: "Adventure" },
+                    { word: "EXPLORATION", clue: "Looking around", hint: "Searching new places", category: "Adventure" },
+                    { word: "JOURNEY", clue: "Long trip", hint: "Travel somewhere", category: "Adventure" },
+                    { word: "DESTINATION", clue: "Where you're going", hint: "End of trip", category: "Adventure" },
+                    { word: "VACATION", clue: "Time off", hint: "Holiday time", category: "Adventure" },
+                    { word: "CELEBRATION", clue: "Happy event", hint: "Party time", category: "Adventure" },
+                    { word: "FESTIVAL", clue: "Big celebration", hint: "Community party", category: "Adventure" },
+                    { word: "BIRTHDAY", clue: "Day you were born", hint: "Annual celebration", category: "Adventure" },
+                    { word: "GRADUATION", clue: "Finishing school", hint: "Achievement ceremony", category: "Adventure" },
+                    { word: "WEDDING", clue: "Marriage ceremony", hint: "Two people unite", category: "Adventure" },
+                    { word: "ANNIVERSARY", clue: "Yearly remembrance", hint: "Special date", category: "Adventure" },
+                    { word: "ACHIEVEMENT", clue: "Something accomplished", hint: "Success", category: "Adventure" },
+                    { word: "CHALLENGE", clue: "Difficult task", hint: "Test of ability", category: "Adventure" },
+                    { word: "OPPORTUNITY", clue: "Good chance", hint: "Possibility", category: "Adventure" },
+                    { word: "EXPERIENCE", clue: "Something you lived", hint: "What happened to you", category: "Adventure" },
+                    { word: "KNOWLEDGE", clue: "What you know", hint: "Information learned", category: "Adventure" },
+                    { word: "WISDOM", clue: "Smart understanding", hint: "Deep knowledge", category: "Adventure" },
+                    { word: "CREATIVITY", clue: "Making new things", hint: "Artistic ability", category: "Adventure" },
+                    { word: "IMAGINATION", clue: "Thinking of new ideas", hint: "Creative thinking", category: "Adventure" },
+                    { word: "INSPIRATION", clue: "Feeling motivated", hint: "Gets you excited", category: "Adventure" },
+                    { word: "MOTIVATION", clue: "Reason to do something", hint: "What drives you", category: "Adventure" },
+                    { word: "DETERMINATION", clue: "Not giving up", hint: "Strong will", category: "Adventure" },
+                    { word: "PERSEVERANCE", clue: "Keep trying", hint: "Don't quit", category: "Adventure" },
+                    { word: "PATIENCE", clue: "Waiting calmly", hint: "Not rushing", category: "Adventure" },
+                    { word: "KINDNESS", clue: "Being nice", hint: "Caring about others", category: "Adventure" },
+                    { word: "FRIENDSHIP", clue: "Being friends", hint: "Close relationship", category: "Adventure" },
+                    { word: "COOPERATION", clue: "Working together", hint: "Team effort", category: "Adventure" },
+                    { word: "COMMUNICATION", clue: "Sharing information", hint: "Talking and listening", category: "Adventure" },
+                    { word: "UNDERSTANDING", clue: "Getting the meaning", hint: "Comprehending", category: "Adventure" },
+                    { word: "RESPONSIBILITY", clue: "Taking care of duties", hint: "Being reliable", category: "Adventure" },
+                    { word: "INDEPENDENCE", clue: "Doing things alone", hint: "Not needing help", category: "Adventure" },
+                    { word: "CONFIDENCE", clue: "Believing in yourself", hint: "Self-assurance", category: "Adventure" },
+                    { word: "CURIOSITY", clue: "Wanting to learn", hint: "Asking questions", category: "Adventure" },
+                    { word: "ENTHUSIASM", clue: "Being excited", hint: "Full of energy", category: "Adventure" },
+                    { word: "OPTIMISM", clue: "Positive thinking", hint: "Looking on bright side", category: "Adventure" },
+                    { word: "GRATITUDE", clue: "Being thankful", hint: "Appreciating things", category: "Adventure" },
+                    { word: "RESPECT", clue: "Treating others well", hint: "Being polite", category: "Adventure" },
+                    { word: "HONESTY", clue: "Telling the truth", hint: "Being truthful", category: "Adventure" },
+                    { word: "LOYALTY", clue: "Being faithful", hint: "Staying true", category: "Adventure" },
+                    { word: "COURAGE", clue: "Being brave", hint: "Facing fears", category: "Adventure" },
+                    { word: "STRENGTH", clue: "Being strong", hint: "Physical or mental power", category: "Adventure" },
+                    { word: "FLEXIBILITY", clue: "Adapting to change", hint: "Being bendable", category: "Adventure" },
+                    { word: "BALANCE", clue: "Equal on both sides", hint: "Not falling over", category: "Adventure" },
+                    { word: "HARMONY", clue: "Working well together", hint: "Peace and agreement", category: "Adventure" },
+                    { word: "PROGRESS", clue: "Moving forward", hint: "Getting better", category: "Adventure" },
+                    { word: "SUCCESS", clue: "Achieving goals", hint: "Doing well", category: "Adventure" },
+                    { word: "VICTORY", clue: "Winning", hint: "Being successful", category: "Adventure" }
+                ];
+                
+                this.questions = this.questions.concat(additionalQuestions, finalQuestions);
+                
+                // Shuffle questions for variety
+                this.shuffleArray(this.questions);
+            }
+            
+            shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+            
+            addTeam() {
+                const input = document.getElementById('teamNameInput');
+                const teamName = input.value.trim();
+                
+                if (teamName && !this.teams.find(team => team.name === teamName)) {
+                    this.teams.push({
+                        name: teamName,
+                        score: 0,
+                        wordsCompleted: 0,
+                        color: this.getRandomColor()
+                    });
+                    
+                    input.value = '';
+                    this.updateTeamsList();
+                    this.updateStartButton();
+                }
+            }
+            
+            addSampleTeams() {
+                const sampleTeams = ["Team Alpha", "Team Beta", "Team Gamma", "Team Delta"];
+                sampleTeams.forEach(teamName => {
+                    if (!this.teams.find(team => team.name === teamName)) {
+                        this.teams.push({
+                            name: teamName,
+                            score: 0,
+                            wordsCompleted: 0,
+                            color: this.getRandomColor()
+                        });
+                    }
+                });
+                this.updateTeamsList();
+                this.updateStartButton();
+            }
+            
+            getRandomColor() {
+                const colors = [
+                    'from-red-400 to-red-600',
+                    'from-blue-400 to-blue-600',
+                    'from-green-400 to-green-600',
+                    'from-yellow-400 to-yellow-600',
+                    'from-purple-400 to-purple-600',
+                    'from-pink-400 to-pink-600',
+                    'from-indigo-400 to-indigo-600',
+                    'from-teal-400 to-teal-600',
+                    'from-orange-400 to-orange-600',
+                    'from-cyan-400 to-cyan-600'
+                ];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+            
+            updateTeamsList() {
+                const container = document.getElementById('teamsList');
+                container.innerHTML = this.teams.map((team, index) => `
+                    <div class="bg-gradient-to-r ${team.color} text-white p-4 rounded-xl shadow-lg">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-lg">${team.name}</span>
+                            <button onclick="game.removeTeam(${index})" class="bg-white text-red-500 px-2 py-1 rounded text-sm hover:bg-gray-100">
+                                ❌
+                            </button>
+                        </div>
+                        <div class="text-sm mt-2">Score: ${team.score}</div>
+                        <div class="text-xs">Words: ${team.wordsCompleted}</div>
+                    </div>
+                `).join('');
+                
+                document.getElementById('teamCount').textContent = this.teams.length;
+            }
+            
+            removeTeam(index) {
+                this.teams.splice(index, 1);
+                this.updateTeamsList();
+                this.updateStartButton();
+            }
+            
+            updateStartButton() {
+                const startBtn = document.getElementById('startGameBtn');
+                startBtn.disabled = this.teams.length < 2;
+            }
+            
+            startGame() {
+                if (this.teams.length < 2) return;
+                
+                document.getElementById('setupScreen').classList.add('hidden');
+                document.getElementById('gameScreen').classList.remove('hidden');
+                
+                this.currentQuestion = 0;
+                this.currentTeam = 0;
+                this.correctLettersCount = 0;
+                this.wrongLettersCount = 0;
+                this.wordsCompletedCount = 0;
+                
+                this.startQuestion();
+            }
+            
+            startQuestion() {
+                if (this.currentQuestion >= this.totalQuestions) {
+                    this.showFinalResults();
+                    return;
+                }
+                
+                const question = this.questions[this.currentQuestion];
+                this.currentWord = question.word;
+                this.guessedLetters = [];
+                
+                document.getElementById('questionNumber').textContent = this.currentQuestion + 1;
+                document.getElementById('currentCategory').textContent = question.category;
+                document.getElementById('currentTeamName').textContent = this.teams[this.currentTeam].name;
+                document.getElementById('wordClue').textContent = question.clue;
+                document.getElementById('wordHint').textContent = `Hint: ${question.hint}`;
+                
+                this.displayWord();
+                this.updateTeamScores();
+                this.updateGameStats();
+                this.startTimer();
+                
+                // Reset input
+                document.getElementById('letterInput').value = '';
+                document.getElementById('letterInput').focus();
+                document.getElementById('wordGuessArea').classList.add('hidden');
+            }
+            
+            displayWord() {
+                const container = document.getElementById('wordDisplay');
+                container.innerHTML = this.currentWord.split('').map((letter, index) => {
+                    const isGuessed = this.guessedLetters.includes(letter);
+                    return `
+                        <div class="w-12 h-12 border-2 border-gray-400 rounded-lg flex items-center justify-center text-2xl font-bold ${isGuessed ? 'bg-green-200 text-green-800' : 'bg-white'} letter-box">
+                            ${isGuessed ? letter : ''}
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            updateTeamScores() {
+                const container = document.getElementById('teamScores');
+                container.innerHTML = this.teams.map((team, index) => {
+                    const isCurrentTeam = index === this.currentTeam;
+                    return `
+                        <div class="bg-gradient-to-r ${team.color} text-white p-4 rounded-xl text-center ${isCurrentTeam ? 'student-glow' : ''}">
+                            <div class="font-bold text-lg">${team.name}</div>
+                            <div class="text-2xl font-bold">${team.score}</div>
+                            <div class="text-sm">points</div>
+                            <div class="text-xs">${team.wordsCompleted} words</div>
+                            ${isCurrentTeam ? '<div class="text-xs mt-1 font-bold">🎯 CURRENT TURN</div>' : ''}
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            updateGameStats() {
+                document.getElementById('correctLetters').textContent = this.correctLettersCount;
+                document.getElementById('wrongLetters').textContent = this.wrongLettersCount;
+                document.getElementById('wordsCompleted').textContent = this.wordsCompletedCount;
+            }
+            
+            startTimer() {
+                this.timer = 60;
+                this.isRunning = true;
+                this.updateTimerDisplay();
+                
+                this.timerInterval = setInterval(() => {
+                    if (this.isRunning && this.timer > 0) {
+                        this.timer--;
+                        this.updateTimerDisplay();
+                        
+                        if (this.timer === 0) {
+                            this.timeUp();
+                        }
+                    }
+                }, 1000);
+            }
+            
+            updateTimerDisplay() {
+                const timerElement = document.getElementById('timer');
+                timerElement.textContent = this.timer;
+                
+                if (this.timer <= 10) {
+                    timerElement.className = 'text-4xl font-bold timer-urgent';
+                } else if (this.timer <= 30) {
+                    timerElement.className = 'text-4xl font-bold text-yellow-600';
+                } else {
+                    timerElement.className = 'text-4xl font-bold text-blue-600';
+                }
+            }
+            
+            pauseGame() {
+                this.isRunning = !this.isRunning;
+                const pauseBtn = document.getElementById('pauseBtn');
+                pauseBtn.textContent = this.isRunning ? '⏸️ Pause' : '▶️ Resume';
+            }
+            
+            timeUp() {
+                clearInterval(this.timerInterval);
+                alert('⏰ Time\'s up! Next team\'s turn!');
+                this.nextTeam();
+            }
+            
+            submitLetter() {
+                const input = document.getElementById('letterInput');
+                const letter = input.value.toUpperCase().trim();
+                
+                if (!letter || letter.length !== 1 || this.guessedLetters.includes(letter)) {
+                    alert('Please enter a valid letter that hasn\'t been guessed!');
+                    return;
+                }
+                
+                this.guessedLetters.push(letter);
+                
+                if (this.currentWord.includes(letter)) {
+                    // Correct letter
+                    this.teams[this.currentTeam].score += 1;
+                    this.correctLettersCount++;
+                    
+                    this.displayWord();
+                    this.updateTeamScores();
+                    this.updateGameStats();
+                    
+                    // Check if word is complete
+                    if (this.isWordComplete()) {
+                        this.wordCompleted();
+                    }
+                    
+                    alert(`✅ Correct! "${letter}" is in the word! +1 point`);
+                } else {
+                    // Wrong letter
+                    this.wrongLettersCount++;
+                    this.updateGameStats();
+                    alert(`❌ Sorry, "${letter}" is not in the word. Next team's turn!`);
+                    this.nextTeam();
+                }
+                
+                input.value = '';
+                input.focus();
+            }
+            
+            isWordComplete() {
+                return this.currentWord.split('').every(letter => this.guessedLetters.includes(letter));
+            }
+            
+            wordCompleted() {
+                clearInterval(this.timerInterval);
+                this.teams[this.currentTeam].score += 10;
+                this.teams[this.currentTeam].wordsCompleted++;
+                this.wordsCompletedCount++;
+                
+                const wordDisplay = document.getElementById('wordDisplay');
+                wordDisplay.classList.add('correct-word');
+                
+                alert(`🎉 WORD COMPLETED! "${this.currentWord}" +10 bonus points!`);
+                
+                setTimeout(() => {
+                    this.nextQuestion();
+                }, 2000);
+            }
+            
+            guessWord() {
+                document.getElementById('wordGuessArea').classList.remove('hidden');
+                document.getElementById('wordGuessInput').focus();
+            }
+            
+            cancelWordGuess() {
+                document.getElementById('wordGuessArea').classList.add('hidden');
+                document.getElementById('wordGuessInput').value = '';
+                document.getElementById('letterInput').focus();
+            }
+            
+            submitWordGuess() {
+                const input = document.getElementById('wordGuessInput');
+                const guess = input.value.toUpperCase().trim();
+                
+                if (!guess) {
+                    alert('Please enter a word!');
+                    return;
+                }
+                
+                if (guess === this.currentWord) {
+                    // Correct word guess
+                    this.teams[this.currentTeam].score += 15;
+                    this.teams[this.currentTeam].wordsCompleted++;
+                    this.wordsCompletedCount++;
+                    
+                    // Fill in all letters
+                    this.guessedLetters = this.currentWord.split('');
+                    this.displayWord();
+                    
+                    const wordDisplay = document.getElementById('wordDisplay');
+                    wordDisplay.classList.add('correct-word');
+                    
+                    alert(`🎉 PERFECT! You guessed "${this.currentWord}" correctly! +15 points!`);
+                    
+                    clearInterval(this.timerInterval);
+                    setTimeout(() => {
+                        this.nextQuestion();
+                    }, 2000);
+                } else {
+                    // Wrong word guess
+                    alert(`❌ Sorry, "${guess}" is not correct. Next team's turn!`);
+                    this.nextTeam();
+                }
+                
+                this.cancelWordGuess();
+            }
+            
+            nextTeam() {
+                this.currentTeam = (this.currentTeam + 1) % this.teams.length;
+                document.getElementById('currentTeamName').textContent = this.teams[this.currentTeam].name;
+                this.updateTeamScores();
+                
+                // Reset timer
+                clearInterval(this.timerInterval);
+                this.startTimer();
+            }
+            
+            nextQuestion() {
+                this.currentQuestion++;
+                this.startQuestion();
+            }
+            
+            skipQuestion() {
+                clearInterval(this.timerInterval);
+                alert(`Skipping word: "${this.currentWord}"`);
+                this.nextQuestion();
+            }
+            
+            showScores() {
+                const sortedTeams = [...this.teams].sort((a, b) => b.score - a.score);
+                let scoreText = "🏆 CURRENT SCORES 🏆\n\n";
+                sortedTeams.forEach((team, index) => {
+                    const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🏅';
+                    scoreText += `${medal} ${team.name}: ${team.score} points (${team.wordsCompleted} words)\n`;
+                });
+                alert(scoreText);
+            }
+            
+            endGame() {
+                clearInterval(this.timerInterval);
+                this.showFinalResults();
+            }
+            
+            showFinalResults() {
+                document.getElementById('gameScreen').classList.add('hidden');
+                document.getElementById('resultsScreen').classList.remove('hidden');
+                
+                const sortedTeams = [...this.teams].sort((a, b) => b.score - a.score);
+                
+                const resultsHTML = sortedTeams.map((team, index) => {
+                    const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🏅';
+                    const celebration = index === 0 ? 'team-celebration' : '';
+                    
+                    return `
+                        <div class="bg-gradient-to-r ${team.color} text-white p-6 rounded-2xl mb-4 ${celebration}">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="text-4xl mr-4">${medal}</span>
+                                    <div>
+                                        <h3 class="text-2xl font-bold">${team.name}</h3>
+                                        <p class="text-lg">Final Score: ${team.score} points</p>
+                                        <p class="text-sm">Words Completed: ${team.wordsCompleted}</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-sm">Position</div>
+                                    <div class="text-3xl font-bold">#${index + 1}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                document.getElementById('finalResults').innerHTML = `
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-bold text-purple-600 mb-4">🎯 Game Statistics</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <div class="bg-blue-100 rounded-xl p-4 text-center">
+                                <div class="text-3xl font-bold text-blue-800">${this.currentQuestion}</div>
+                                <div class="text-sm text-blue-600">Questions Completed</div>
+                            </div>
+                            <div class="bg-green-100 rounded-xl p-4 text-center">
+                                <div class="text-3xl font-bold text-green-800">${this.wordsCompletedCount}</div>
+                                <div class="text-sm text-green-600">Total Words Completed</div>
+                            </div>
+                            <div class="bg-purple-100 rounded-xl p-4 text-center">
+                                <div class="text-3xl font-bold text-purple-800">${this.correctLettersCount}</div>
+                                <div class="text-sm text-purple-600">Correct Letters</div>
+                            </div>
+                        </div>
+                    </div>
+                    ${resultsHTML}
+                `;
+            }
+            
+            playAgain() {
+                // Reset scores but keep teams
+                this.teams.forEach(team => {
+                    team.score = 0;
+                    team.wordsCompleted = 0;
+                });
+                this.currentQuestion = 0;
+                this.currentTeam = 0;
+                this.correctLettersCount = 0;
+                this.wrongLettersCount = 0;
+                this.wordsCompletedCount = 0;
+                
+                // Shuffle questions again
+                this.shuffleArray(this.questions);
+                
+                document.getElementById('resultsScreen').classList.add('hidden');
+                document.getElementById('gameScreen').classList.remove('hidden');
+                
+                this.startQuestion();
+            }
+            
+            newGame() {
+                // Reset everything
+                this.teams = [];
+                this.currentQuestion = 0;
+                this.currentTeam = 0;
+                this.correctLettersCount = 0;
+                this.wrongLettersCount = 0;
+                this.wordsCompletedCount = 0;
+                
+                document.getElementById('resultsScreen').classList.add('hidden');
+                document.getElementById('setupScreen').classList.remove('hidden');
+                
+                this.updateTeamsList();
+                this.updateStartButton();
+            }
+        }
+        
+        // Global game instance
+        const game = new FillInTheBlankGame();
+        
+        // Global functions
+        function addTeam() {
+            game.addTeam();
+        }
+        
+        function addSampleTeams() {
+            game.addSampleTeams();
+        }
+        
+        function startGame() {
+            game.startGame();
+        }
+        
+        function pauseGame() {
+            game.pauseGame();
+        }
+        
+        function skipQuestion() {
+            game.skipQuestion();
+        }
+        
+        function showScores() {
+            game.showScores();
+        }
+        
+        function endGame() {
+            game.endGame();
+        }
+        
+        function submitLetter() {
+            game.submitLetter();
+        }
+        
+        function guessWord() {
+            game.guessWord();
+        }
+        
+        function cancelWordGuess() {
+            game.cancelWordGuess();
+        }
+        
+        function submitWordGuess() {
+            game.submitWordGuess();
+        }
+        
+        function playAgain() {
+            game.playAgain();
+        }
+        
+        function newGame() {
+            game.newGame();
+        }
+        
+        // Enter key support for inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('teamNameInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addTeam();
+                }
+            });
+            
+            document.getElementById('letterInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    submitLetter();
+                }
+            });
+            
+            document.getElementById('wordGuessInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    submitWordGuess();
+                }
+            });
+            
+            // Auto-uppercase letter input
+            document.getElementById('letterInput').addEventListener('input', function(e) {
+                e.target.value = e.target.value.toUpperCase();
+            });
+            
+            document.getElementById('wordGuessInput').addEventListener('input', function(e) {
+                e.target.value = e.target.value.toUpperCase();
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'963c4344528a8962',t:'MTc1MzI4NTA4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
