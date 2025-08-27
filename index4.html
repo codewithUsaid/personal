@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>English Arcade — Pro Dark (Usaid Raza Attari)</title>
+<style>
+        *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg-1:#061026; --bg-2:#032a3d;
+      --muted:#a6b0c3;
+      --accent-start:#8a6bff; --accent-end:#2bb7ff;
+      --success:#29d07a; --danger:#ff6b6b;
+      --light-btn:#f3f6ff;
+    }
+    body{
+      font-family:'Segoe UI', Tahoma, Verdana, sans-serif;
+      min-height:100vh;
+      color:#e8f1ff;
+      -webkit-font-smoothing:antialiased;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Background Video */
+    .bg-video{
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+    /* Content on top */
+    .content{
+      position: relative;
+      z-index: 1;
+      padding: 18px;
+    }
+
+/* RESET */
+/* *{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-1:#061026; --bg-2:#032a3d;
+  --muted:#a6b0c3;
+  --accent-start:#8a6bff; --accent-end:#2bb7ff;
+  --success:#29d07a; --danger:#ff6b6b;
+  --light-btn:#f3f6ff;
+}
+body{
+  font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+  background: linear-gradient(135deg,var(--bg-1),var(--bg-2));
+  color:#e8f1ff; min-height:100vh; padding:18px;
+  -webkit-font-smoothing:antialiased;
+} */
+/* Container */
+.container{max-width:1200px;margin:0 auto;}
+
+/* PRO startup fullscreen */
+.startup {
+  position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+  background: radial-gradient(circle at 10% 10%, rgba(43,183,255,0.08), transparent 10%),
+              linear-gradient(180deg, rgba(2,6,25,0.95), rgba(2,6,20,0.98));
+  z-index:9999; overflow:hidden;
+}
+.startup-card {
+  width:100%; max-width:820px; padding:36px; border-radius:20px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 30px 80px rgba(2,6,25,0.9);
+  text-align:center; position:relative; overflow:visible;
+}
+.logo {
+  width:120px; height:120px; margin:0 auto 14px; border-radius:24px;
+  background: linear-gradient(135deg,var(--accent-start),var(--accent-end));
+  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:36px;
+  color:white; box-shadow:0 12px 30px rgba(123,97,255,0.18), inset 0 -6px 18px rgba(0,0,0,0.12);
+  transform: rotate(-8deg);
+}
+/* Animated particles */
+.particle {
+  position:absolute; width:12px; height:12px; border-radius:50%;
+  background: linear-gradient(90deg,var(--accent-start),var(--accent-end)); opacity:0.18;
+  filter: blur(6px);
+  animation: float 6s infinite ease-in-out;
+}
+@keyframes float {
+  0%{ transform: translateY(0) translateX(0) scale(1) }
+  50%{ transform: translateY(-40px) translateX(20px) scale(1.2) }
+  100%{ transform: translateY(0) translateX(0) scale(1) }
+}
+
+/* Splash texts */
+.startup h1{ font-size:2rem; margin-bottom:8px;
+  background:linear-gradient(90deg,var(--accent-start),var(--accent-end));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.startup p{ color:var(--muted); margin-bottom:18px; font-size:1rem; }
+
+.start-buttons { display:flex; gap:12px; justify-content:center; margin-top:8px; }
+.btn-play {
+  background: linear-gradient(90deg,var(--accent-start),var(--accent-end));
+  color:white; padding:12px 18px; border-radius:999px; border:none; font-weight:900; cursor:pointer; font-size:1rem;
+  box-shadow: 0 12px 30px rgba(43,183,255,0.12);
+}
+.btn-demo {
+  background: var(--light-btn); color: #0b1220; padding:10px 14px; border-radius:999px; border:none; font-weight:800; cursor:pointer;
+}
+
+/* Header & menu style */
+.header{ text-align:center; margin:12px 0 10px; padding:14px; border-radius:14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+  border:1px solid rgba(255,255,255,0.03);
+}
+.header h2{ font-size:1.6rem; margin-bottom:6px; color:transparent;
+  background: linear-gradient(90deg,var(--accent-start),var(--accent-end)); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.header p{ color:var(--muted) }
+
+/* Activities grid */
+.activities-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap:14px; margin-top:14px; }
+.activity-card{
+  padding:14px; border-radius:12px; cursor:pointer;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+  border:1px solid rgba(255,255,255,0.03);
+  transition: transform .18s, box-shadow .18s;
+  min-height:140px; display:flex; flex-direction:column; justify-content:space-between;
+}
+.activity-card:hover{ transform: translateY(-6px); box-shadow: 0 18px 40px rgba(2,6,25,0.7); }
+.activity-icon{ font-size:28px; text-align:center; margin-bottom:8px; }
+.activity-title{ font-weight:900; color:#eaf2ff; text-align:center; margin-bottom:6px; font-size:1.05rem; }
+.activity-desc{ color:var(--muted); text-align:center; font-size:0.95rem; margin-bottom:10px; }
+
+/* Menu button light color as requested */
+.menu-play {
+  background: var(--light-btn);
+  color:#0b1220;
+  padding:10px 12px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,0.05);
+  font-weight:800; cursor:pointer;
+}
+
+/* Game area */
+.game-area{ display:none; margin-top:16px; padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.03); background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); }
+.game-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:12px; }
+.back-btn{ background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.03); padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:800; }
+.score-display{ color:var(--accent-end); font-weight:900; }
+.progress{ height:10px; background: rgba(255,255,255,0.03); border-radius:999px; overflow:hidden; margin-bottom:12px; border:1px solid rgba(255,255,255,0.02); }
+.progress-fill{ height:100%; width:0%; background: linear-gradient(90deg,var(--accent-start),var(--accent-end)); transition: width .3s ease; }
+
+/* question styling */
+.question-container{ background: rgba(255,255,255,0.01); padding:14px; border-radius:10px; border:1px solid rgba(255,255,255,0.02); margin-bottom:10px; }
+.question-text{ color:#dfe9ff; margin-bottom:10px; font-size:1.03rem; line-height:1.5; }
+.blank-input{ background: rgba(0,0,0,0.38); color:#eaf2ff; padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); }
+.option-grid{ display:grid; gap:10px; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); }
+.option-btn{ padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.03); background:rgba(255,255,255,0.01); color:#eaf2ff; cursor:pointer; font-weight:800; }
+.option-btn:hover{ transform:translateY(-4px); border-color: rgba(123,97,255,0.5); background: rgba(123,97,255,0.04); }
+.option-btn.selected{ background:linear-gradient(90deg, rgba(123,97,255,0.14), rgba(43,183,255,0.06)); color:white; }
+.option-btn.correct{ background: linear-gradient(90deg, rgba(41,208,122,0.14), rgba(41,208,122,0.05)); color:#eaffef; }
+.option-btn.incorrect{ background: linear-gradient(90deg, rgba(255,107,107,0.14), rgba(255,107,107,0.04)); color:#fff; }
+
+/* word match / memory / sentence builder */
+.word-match{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.word-list{ background: rgba(255,255,255,0.01); padding:10px; border-radius:8px; min-height:160px; border:1px solid rgba(255,255,255,0.02); }
+.word-item{ padding:8px; border-radius:8px; margin:8px 0; background:rgba(255,255,255,0.02); cursor:pointer; font-weight:800; }
+.word-item.matched{ background: linear-gradient(90deg, rgba(41,208,122,0.9), rgba(123,97,255,0.5)); color:white; cursor:default; }
+.sentence-builder{ min-height:80px; border:1px dashed rgba(255,255,255,0.03); padding:10px; border-radius:8px; margin-top:10px }
+.sentence-chip{ display:inline-block; padding:8px 10px; border-radius:999px; background: linear-gradient(90deg,var(--accent-start),var(--accent-end)); color:white; margin:6px; font-weight:900; cursor:pointer; }
+
+/* final & footer */
+.final-score{ text-align:center; padding:14px; border-radius:10px; background: linear-gradient(90deg, rgba(123,97,255,0.06), rgba(43,183,255,0.04)); margin-top:12px; }
+.footer{ margin-top:18px; color:var(--muted); display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+.footer .author{ font-weight:800; color:#eaf2ff; }
+.benefits{ max-width:720px; color:var(--muted); font-size:0.95rem; }
+
+/* responsive tweaks */
+@media (max-width:820px){
+  .word-match{ grid-template-columns:1fr; }
+  .startup-card{ padding:20px; border-radius:14px; }
+  .logo{ width:96px; height:96px; font-size:30px }
+}
+</style>
+</head>
+<body>
+
+ <!-- Video Background -->
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="usaid1.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+  
+
+
+  <!-- FULLSCREEN PRO STARTUP -->
+  <div class="startup" id="startup">
+    <div class="startup-card">
+      <!-- <div><img src="my.jpeg" alt="" width="20%" height="10%"></div> -->
+      <h1>🎓 English Master Pro</h1>
+      <p>With this English game, you can improve your vocabulary, spelling, grammar, and reading comprehension. You get an engaging and professional learning experience, and teachers can make lessons more interactive for you.</p>
+      <div class="start-buttons">
+        <button class="btn-play" id="start-now">Start</button>
+        <button class="btn-demo" id="go-demo">Open Menu </button>
+      </div>
+      <p style="color:var(--muted);margin-top:12px;font-size:0.92rem">Created by <strong>Usaid Raza Attari</strong></p>
+      <!-- Animated particles for pro look -->
+      <div class="particle" style="left:10%; top:30%; animation-duration:6s;"></div>
+      <div class="particle" style="left:85%; top:20%; width:18px;height:18px; animation-duration:7s; opacity:0.12"></div>
+      <div class="particle" style="left:60%; top:78%; width:10px;height:10px; animation-duration:5s; opacity:0.14"></div>
+      <div class="particle" style="left:30%; top:10%; width:14px;height:14px; animation-duration:8s; opacity:0.10"></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <h2>🎓 English Master Pro</h2>
+      <p>10 Games — designed to boost your vocabulary, sharpen spelling, improve grammar, strengthen reading, and make learning fun.</p>
+    </div>
+
+    <!-- MAIN MENU -->
+    <div id="main-menu">
+      <div class="activities-grid" id="activities"></div>
+    </div>
+
+    <!-- GAME AREA -->
+    <div id="game-area" class="game-area">
+      <div class="game-header">
+        <div style="display:flex;gap:10px;align-items:center">
+          <button class="back-btn" onclick="backToMenu()">← Menu</button>
+          <div id="game-title" style="color:var(--muted);font-weight:900">Activity</div>
+        </div>
+        <div class="score-display">Score: <span id="score">0</span></div>
+      </div>
+
+      <div class="progress"><div id="progress-fill" class="progress-fill"></div></div>
+
+      <div id="question-content"></div>
+
+      <div id="feedback" style="display:none;margin-top:8px"></div>
+      <div style="margin-top:10px">
+        <button id="check-btn" class="btn-play" style="display:none" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" class="menu-play" style="display:none" onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="author"> Created By: Usaid Raza Attari</div>
+      <div class="benefits">
+        <strong>Benefits:</strong> With this English game, you can improve your vocabulary, spelling, grammar, and reading comprehension. You get an engaging and professional learning experience, and teachers can make lessons more interactive for you.
+    </div>
+  </div>
+
+<script>
+/* ========= ACTIVITIES LIST (removed Typing & Listening per request) ========= */
+const activitiesList = [
+  {id:1, title:'Fill in the Blank', desc:'Type the missing word to complete each sentence.', icon:'📝'},
+  {id:2, title:'Word Matching', desc:'Match pictures (emoji) with words.', icon:'🔤'},
+  {id:3, title:'Grammar Challenge', desc:'Choose correct grammar forms.', icon:'🎯'},
+  {id:4, title:'Sentence Builder', desc:'Arrange words to create correct sentences.', icon:'🔧'},
+  {id:5, title:'Reading Comprehension', desc:'Read passages (longer) and answer questions.', icon:'📚'},
+  {id:6, title:'Spelling Puzzle', desc:'Unscramble & spell difficult words (100 words).', icon:'🧩'},
+  {id:7, title:'Memory Match', desc:'Match emoji with word — now 12 pairs (24 cards).', icon:'🃏'},
+  {id:8, title:'Synonym / Antonym', desc:'Choose correct synonym or antonym — 100-word set.', icon:'🔁'}
+];
+
+/* ========= LARGE DATASETS ========= */
+
+/* --- Word bank: 100 words with synonyms & antonyms (for Syn/Ant & Word Matching) --- */
+/* Note: Some words may have single simple synonyms/antonyms for demo; expand as needed */
+const WORD_BANK = [
+{word:'abandon', emoji:'🚪', synonyms:['leave'], antonyms:['keep']},
+{word:'ability', emoji:'💪', synonyms:['skill'], antonyms:['inability']},
+{word:'accurate', emoji:'🎯', synonyms:['precise'], antonyms:['inaccurate']},
+{word:'ancient', emoji:'🏺', synonyms:['old'], antonyms:['modern']},
+{word:'ambitious', emoji:'🚀', synonyms:['driven'], antonyms:['unambitious']},
+{word:'benefit', emoji:'🎁', synonyms:['advantage'], antonyms:['disadvantage']},
+{word:'brave', emoji:'🛡️', synonyms:['courageous'], antonyms:['cowardly']},
+{word:'calm', emoji:'🌊', synonyms:['peaceful'], antonyms:['anxious']},
+{word:'capture', emoji:'📸', synonyms:['seize'], antonyms:['release']},
+{word:'careful', emoji:'🧐', synonyms:['cautious'], antonyms:['careless']},
+{word:'clever', emoji:'🧠', synonyms:['smart'], antonyms:['stupid']},
+{word:'comfort', emoji:'🛋️', synonyms:['ease'], antonyms:['discomfort']},
+{word:'common', emoji:'🧩', synonyms:['usual'], antonyms:['rare']},
+{word:'compact', emoji:'📦', synonyms:['small'], antonyms:['large']},
+{word:'compete', emoji:'🏁', synonyms:['contest'], antonyms:['cooperate']},
+{word:'complex', emoji:'🧩', synonyms:['complicated'], antonyms:['simple']},
+{word:'confident', emoji:'😎', synonyms:['sure'], antonyms:['doubtful']},
+{word:'connect', emoji:'🔗', synonyms:['join'], antonyms:['separate']},
+{word:'courage', emoji:'🦁', synonyms:['bravery'], antonyms:['fear']},
+{word:'create', emoji:'🎨', synonyms:['make'], antonyms:['destroy']},
+{word:'curious', emoji:'🔍', synonyms:['inquisitive'], antonyms:['indifferent']},
+{word:'decide', emoji:'✅', synonyms:['choose'], antonyms:['hesitate']},
+{word:'deep', emoji:'🌊', synonyms:['profound'], antonyms:['shallow']},
+{word:'deliver', emoji:'📦', synonyms:['provide'], antonyms:['withhold']},
+{word:'depend', emoji:'🤝', synonyms:['rely'], antonyms:['distrust']},
+{word:'desire', emoji:'🔥', synonyms:['wish'], antonyms:['aversion']},
+{word:'difficult', emoji:'⛰️', synonyms:['hard'], antonyms:['easy']},
+{word:'discover', emoji:'🧭', synonyms:['find'], antonyms:['lose']},
+{word:'distant', emoji:'🏜️', synonyms:['far'], antonyms:['near']},
+{word:'divide', emoji:'➗', synonyms:['split'], antonyms:['join']},
+{word:'eager', emoji:'⚡', synonyms:['keen'], antonyms:['reluctant']},
+{word:'efficient', emoji:'⚙️', synonyms:['effective'], antonyms:['inefficient']},
+{word:'empty', emoji:'🪣', synonyms:['vacant'], antonyms:['full']},
+{word:'enable', emoji:'🔌', synonyms:['allow'], antonyms:['prevent']},
+{word:'encourage', emoji:'🌱', synonyms:['support'], antonyms:['discourage']},
+{word:'essential', emoji:'🔑', synonyms:['necessary'], antonyms:['optional']},
+{word:'evidence', emoji:'🧾', synonyms:['proof'], antonyms:['disproof']},
+{word:'expand', emoji:'📈', synonyms:['grow'], antonyms:['shrink']},
+{word:'famous', emoji:'⭐', synonyms:['well-known'], antonyms:['unknown']},
+{word:'fortunate', emoji:'🍀', synonyms:['lucky'], antonyms:['unlucky']},
+{word:'frank', emoji:'🗣️', synonyms:['honest'], antonyms:['secretive']},
+{word:'gentle', emoji:'🕊️', synonyms:['mild'], antonyms:['rough']},
+{word:'glorious', emoji:'🏆', synonyms:['splendid'], antonyms:['shameful']},
+{word:'greedy', emoji:'🤑', synonyms:['avaricious'], antonyms:['generous']},
+{word:'habit', emoji:'🔁', synonyms:['custom'], antonyms:['novelty']},
+{word:'healthy', emoji:'🥦', synonyms:['fit'], antonyms:['sick']},
+{word:'honest', emoji:'🤝', synonyms:['truthful'], antonyms:['deceitful']},
+{word:'humble', emoji:'🙏', synonyms:['modest'], antonyms:['proud']},
+{word:'illuminate', emoji:'💡', synonyms:['light'], antonyms:['darken']},
+{word:'imagine', emoji:'💭', synonyms:['visualize'], antonyms:['recall']},
+{word:'improve', emoji:'⬆️', synonyms:['enhance'], antonyms:['worsen']},
+
+];
+/* WORD_BANK length should be 100; ensure it is 100 items (it is close — adjust if needed) */
+
+const GRAMMAR = [
+  {q:"She ___ to school every day.", opts:["go","goes","going","gone"], correct:1},
+  {q:"I have ___ my homework.", opts:["finish","finished","finishing","finishes"], correct:1},
+  {q:"They ___ playing now.", opts:["is","am","are","be"], correct:2},
+  {q:"If I ___ rich, I would travel.", opts:["am","was","were","be"], correct:2},
+  {q:"We ___ to the movies last night.", opts:["go","goes","went","going"], correct:2},
+  {q:"He ___ TV when I called.", opts:["watch","watched","was watching","watches"], correct:2},
+  {q:"She ___ already eaten dinner.", opts:["has","have","had","having"], correct:0},
+  {q:"They ___ in London since 2010.", opts:["lives","live","have lived","living"], correct:2},
+  {q:"I ___ tennis every weekend.", opts:["play","plays","playing","played"], correct:0},
+  {q:"He ___ to the gym tomorrow.", opts:["go","goes","going","will go"], correct:3},
+  {q:"We ___ English right now.", opts:["study","studies","are studying","studied"], correct:2},
+  {q:"The sun ___ in the east.", opts:["rise","rises","rose","rising"], correct:1},
+  {q:"They ___ dinner when I arrived.", opts:["have","had","were having","has"], correct:2},
+  {q:"I ___ him yesterday at the park.", opts:["see","saw","seen","seeing"], correct:1},
+  {q:"She ___ be at the party now.", opts:["must","should","can","could"], correct:0},
+  {q:"He usually ___ coffee in the morning.", opts:["drink","drinks","drank","drinking"], correct:1},
+  {q:"By next year, I ___ finished school.", opts:["have","will have","had","having"], correct:1},
+  {q:"They ___ to Paris last summer.", opts:["go","gone","went","going"], correct:2},
+  {q:"If it ___ tomorrow, we’ll stay home.", opts:["rains","rain","raining","rained"], correct:0},
+  {q:"She ___ working here for five years.", opts:["is","has been","was","were"], correct:1},
+  {q:"We ___ to the concert next week.", opts:["go","are going","goes","went"], correct:1},
+  {q:"I ___ my phone yesterday.", opts:["lose","lost","losing","loses"], correct:1},
+  {q:"They ___ happy to see us.", opts:["was","were","is","are"], correct:1},
+  {q:"He ___ not like spicy food.", opts:["does","do","did","done"], correct:0},
+  {q:"We ___ already finished the project.", opts:["has","had","have","having"], correct:2},
+  {q:"She ___ in the garden when it rained.", opts:["worked","was working","work","works"], correct:1},
+  {q:"I ___ breakfast every morning.", opts:["eat","ate","eating","eats"], correct:0},
+  {q:"They ___ here since last Monday.", opts:["are","were","have been","had"], correct:2},
+  {q:"He ___ a new car last month.", opts:["buys","buy","bought","buying"], correct:2},
+  {q:"I ___ never seen such a movie.", opts:["was","have","had","has"], correct:1}
+]
+
+const READING = [
+  {passage:"Tom has a small dog. They play in the garden. Tom gives the dog water and food.", qs:[
+    {q:"Who has a dog?", opts:["Tom","Anna","The dog","Garden"], correct:0},
+    {q:"Where do they play?", opts:["Kitchen","Garden","School","Store"], correct:1}]},
+  {passage:"Sara reads a book every night. She loves stories about animals.", qs:[
+    {q:"When does Sara read?", opts:["Morning","Afternoon","Every night","Never"], correct:2},
+    {q:"What kind of stories does she love?", opts:["Space","Cars","Animals","Food"], correct:2}]}
+];
+
+/* --- Word Matching uses WORD_BANK list (100) --- */
+
+/* --- Spelling words: 100 difficult words (distinct) --- */
+const SPELLING_WORDS = [
+"aberration","abstain","accumulate","anachronistic","benevolent","capricious","circumvent","coherent","conscientious","conspicuous",
+"contemplate","contentious","contradict","cryptic","deleterious","demonstrate","detrimental","didactic","discrepancy","disparate",
+"eclectic","elucidate","emulate","enigma","ephemeral","equilibrium","esoteric","evoke","exacerbate","exemplary",
+"exuberant","facetious","fallacious","fortuitous","gregarious","heterogeneous","hierarchy","hypothesis","iconoclast","idiosyncratic",
+"illicit","impeccable","implicit","incongruous","indigenous","indispensable","inevitable","insidious","intrepid","juxtapose",
+"kaleidoscope","lamentable","lucrative","magnanimous","meticulous","mitigate","nefarious","nostalgia","obfuscate","omnipotent",
+"onerous","orthodox","paradigm","paramount","persevere","philanthropy","plausible","plethora","propagate","pragmatic",
+"quintessential","ramification","recalcitrant","reciprocity","resilient","salient","sanguine","scrutinize","serendipity","skeptical",
+"solicitous","sporadic","stoic","substantiate","succinct","superfluous","taciturn","tantamount","tenuous","tranquility",
+"ubiquitous","unprecedented","utilitarian","venerable","veneer","vindicate","vulnerable","whimsical","zealous","zenith"
+]; // 100-ish words
+
+/* --- Fill in the Blank: more difficult entries (50) --- */
+const FILL_BLANKS = [
+{sentence:"He made an ___ decision that surprised everyone.", answer:"abrupt"},
+{sentence:"The CEO's ___ changed the company's fate.", answer:"decision"},
+{sentence:"To succeed, you must ___ your skills daily.", answer:"hone"},
+{sentence:"Her ___ attitude inspired the entire team.", answer:"optimistic"},
+{sentence:"They faced a ___ challenge during the project.", answer:"formidable"},
+{sentence:"The scientist presented clear ___ for the theory.", answer:"evidence"},
+{sentence:"This instrument measures ___ properties of light.", answer:"spectral"},
+{sentence:"The treaty aims to ___ cooperation between nations.", answer:"foster"},
+{sentence:"He gave a very ___ explanation of the issue.", answer:"coherent"},
+{sentence:"The plan needed a ___ approach to work.", answer:"strategic"},
+{sentence:"Her ___ contribution improved the design.", answer:"substantial"},
+{sentence:"The medication may cause ___ reactions in some.", answer:"adverse"},
+{sentence:"They worked under a ___ deadline.", answer:"pressing"},
+{sentence:"The student's essay was ___ and persuasive.", answer:"convincing"},
+{sentence:"New evidence may ___ previous assumptions.", answer:"challenge"},
+{sentence:"The artist used a ___ palette for the painting.", answer:"muted"},
+{sentence:"Engineers must ___ safety protocols.", answer:"adhere"},
+{sentence:"The economy is showing signs of ___ growth.", answer:"sustained"},
+{sentence:"She showed ___ when solving the problem.", answer:"ingenuity"},
+{sentence:"Their findings were ___ to the industry's standards.", answer:"relevant"},
+{sentence:"The mountain pass was extremely ___ to traverse.", answer:"treacherous"},
+{sentence:"He responded with ___ to the criticism.", answer:"dignity"},
+{sentence:"The company aims to ___ innovation.", answer:"promote"},
+{sentence:"Her ___ behavior made her popular.", answer:"amiable"},
+{sentence:"We must ___ the root cause of failure.", answer:"identify"},
+{sentence:"The technology is ___ for modern classrooms.", answer:"essential"},
+{sentence:"They pursued a very ___ investigation.", answer:"thorough"},
+{sentence:"The museum houses an ___ collection of artifacts.", answer:"extensive"},
+{sentence:"Good leaders ___ trust in their teams.", answer:"instill"},
+{sentence:"The lecture offered ___ perspectives.", answer:"novel"},
+{sentence:"He faced ___ opposition to the reform.", answer:"stiff"},
+{sentence:"The law aims to ___ consumer rights.", answer:"safeguard"},
+{sentence:"She has a ___ knowledge of languages.", answer:"profound"},
+{sentence:"Their strategy was ___ in the long run.", answer:"sustainable"},
+{sentence:"The product failed due to ___ testing.", answer:"insufficient"},
+{sentence:"He delivered a ___ speech at the conference.", answer:"compelling"},
+{sentence:"The summit provided a ___ opportunity.", answer:"unique"},
+{sentence:"The contract included several ___ clauses.", answer:"binding"},
+{sentence:"They addressed the ___ issues first.", answer:"pressing"},
+{sentence:"Her ___ in art is widely recognized.", answer:"expertise"},
+{sentence:"The manuscript contained several ___ passages.", answer:"archaic"},
+{sentence:"They aim to ___ the service quality.", answer:"elevate"},
+{sentence:"The detective solved the ___ mystery.", answer:"enigmatic"},
+{sentence:"Their behavior was ___ and unacceptable.", answer:"reprehensible"}
+]; // ~50
+
+/* --- Sentence Builder: 50 sentence entries --- */
+const SENTENCE_DATA = [
+{words:["the","cat","slept","on","the","sofa"], correct:"the cat slept on the sofa"},
+{words:["we","enjoy","visiting","new","places"], correct:"we enjoy visiting new places"},
+{words:["the","teacher","explained","the","lesson","clearly"], correct:"the teacher explained the lesson clearly"},
+{words:["children","love","playing","in","the","park"], correct:"children love playing in the park"},
+{words:["she","reads","a","book","every","night"], correct:"she reads a book every night"},
+{words:["the","sun","rises","in","the","east"], correct:"the sun rises in the east"},
+{words:["they","worked","hard","to","finish","the","project"], correct:"they worked hard to finish the project"},
+{words:["water","is","essential","for","life"], correct:"water is essential for life"},
+{words:["the","museum","has","many","ancient","artifacts"], correct:"the museum has many ancient artifacts"},
+{words:["please","remember","to","lock","the","door"], correct:"please remember to lock the door"},
+{words:["a","healthy","diet","includes","fruits","and","vegetables"], correct:"a healthy diet includes fruits and vegetables"},
+{words:["the","train","arrived","on","time"], correct:"the train arrived on time"},
+{words:["they","celebrated","their","success","with","friends"], correct:"they celebrated their success with friends"},
+{words:["the","forest","is","home","to","wild","animals"], correct:"the forest is home to wild animals"},
+{words:["she","practices","piano","for","two","hours"], correct:"she practices piano for two hours"},
+{words:["innovation","drives","modern","business","growth"], correct:"innovation drives modern business growth"},
+{words:["the","chef","prepared","a","delicious","meal"], correct:"the chef prepared a delicious meal"},
+{words:["he","wrote","a","letter","to","his","friend"], correct:"he wrote a letter to his friend"},
+{words:["the","children","learned","through","play"], correct:"the children learned through play"},
+{words:["they","built","a","strong","team","together"], correct:"they built a strong team together"},
+{words:["the","ocean","covers","most","of","the","earth"], correct:"the ocean covers most of the earth"},
+{words:["the","scientist","collected","useful","data"], correct:"the scientist collected useful data"},
+{words:["the","project","requires","careful","planning"], correct:"the project requires careful planning"},
+{words:["reading","regularly","improves","vocabulary"], correct:"reading regularly improves vocabulary"},
+{words:["the","city","was","busy","during","rush","hour"], correct:"the city was busy during rush hour"},
+{words:["they","formed","a","community","garden","together"], correct:"they formed a community garden together"},
+{words:["exercise","strengthens","the","body","and","mind"], correct:"exercise strengthens the body and mind"},
+{words:["the","library","offers","many","resources"], correct:"the library offers many resources"},
+{words:["the","bird","built","a","nest","in","the","tree"], correct:"the bird built a nest in the tree"},
+{words:["the","engineer","designed","a","new","device"], correct:"the engineer designed a new device"},
+{words:["they","practiced","until","they","got","better"], correct:"they practiced until they got better"},
+{words:["she","wore","a","beautiful","dress"], correct:"she wore a beautiful dress"},
+{words:["the","company","launched","a","new","product"], correct:"the company launched a new product"},
+{words:["he","runs","every","morning","for","fitness"], correct:"he runs every morning for fitness"},
+{words:["the","team","celebrated","their","victory"], correct:"the team celebrated their victory"},
+{words:["the","teacher","asked","thoughtful","questions"], correct:"the teacher asked thoughtful questions"},
+{words:["the","garden","was","full","of","flowers"], correct:"the garden was full of flowers"},
+{words:["they","shared","their","knowledge","freely"], correct:"they shared their knowledge freely"},
+{words:["the","child","laughed","with","joy"], correct:"the child laughed with joy"},
+{words:["the","company","values","good","customer","service"], correct:"the company values good customer service"},
+{words:["she","saved","money","for","her","trip"], correct:"she saved money for her trip"},
+{words:["the","museum","opened","a","new","exhibit"], correct:"the museum opened a new exhibit"},
+{words:["they","traveled","across","the","country"], correct:"they traveled across the country"},
+{words:["the","team","worked","through","the","night"], correct:"the team worked through the night"},
+{words:["he","learned","quickly","from","the","mistakes"], correct:"he learned quickly from the mistakes"},
+{words:["kindness","creates","stronger","relationships"], correct:"kindness creates stronger relationships"},
+{words:["she","mastered","the","skill","with","practice"], correct:"she mastered the skill with practice"}
+]; // 50 entries
+
+/* --- Reading passages (each with 3-line-ish passages and questions) --- */
+const READING_DATA = [
+  {
+    passage: "Lina woke early to the bright sound of birds. She prepared a small breakfast and stepped into the garden, where flowers were opening to the sun. The scent of jasmine filled the air as neighbors greeted each other warmly.",
+    qs:[
+      {q:"Who woke early?", opts:["Lina","The neighbor","The birds","Jasmine"], correct:0},
+      {q:"What did Lina prepare?", opts:["Dinner","A small breakfast","A sandwich","Tea"], correct:1}
+    ]
+  },
+  {
+    passage: "A local market brought together farmers and artisans every Saturday. People gathered to buy fresh vegetables, handmade crafts, and warm bread straight from the oven. Children ran around while musicians played soft melodies near the fountain.",
+    qs:[
+      {q:"When does the market meet?", opts:["Every day","Every Sunday","Every Saturday","Once a month"], correct:2},
+      {q:"What could people buy?", opts:["Electronics","Fresh vegetables","Cars","Books only"], correct:1}
+    ]
+  },
+  {
+    passage: "The old library held many stories that whispered from dusty shelves. Students studied for exams beneath tall windows that let in gentle light. Librarians recommended good books and helped learners find useful material.",
+    qs:[
+      {q:"Where did students study?", opts:["At home","Beneath tall windows","In the garden","At the market"], correct:1},
+      {q:"Who helped find materials?", opts:["Teachers","Librarians","Children","Merchants"], correct:1}
+    ]
+  }
+];
+
+/* ========= UI population ========= */
+const activitiesEl = document.getElementById('activities');
+activitiesList.forEach(act=>{
+  const card = document.createElement('div'); card.className='activity-card';
+  card.innerHTML = `
+    <div class="activity-icon">${act.icon}</div>
+    <div class="activity-title">${act.title}</div>
+    <div class="activity-desc">${act.desc}</div>
+    <div style="text-align:center;margin-top:8px"><button class="menu-play">Play</button></div>
+  `;
+  card.addEventListener('click', ()=> showStarter(act.id, act.title, act.desc));
+  card.querySelector('.menu-play').addEventListener('click',(e)=>{ e.stopPropagation(); showStarter(act.id, act.title, act.desc); });
+  activitiesEl.appendChild(card);
+});
+
+/* Startup controls (pro animation) */
+document.getElementById('start-now').addEventListener('click', ()=> {
+  // play a subtle animation: shrink startup then hide
+  const s = document.getElementById('startup');
+  s.style.transition='opacity .6s ease, transform .6s ease';
+  s.style.opacity='0'; s.style.transform='scale(.98)';
+  setTimeout(()=> s.style.display='none',650);
+});
+document.getElementById('go-demo').addEventListener('click', ()=> { document.getElementById('startup').style.display='none'; });
+
+/* Starter overlay for each activity */
+function showStarter(id, title, desc){
+  // small modal simulated by startup card reuse
+  const modal = document.createElement('div');
+  modal.className='startup';
+  modal.innerHTML = `<div class="startup-card" style="max-width:640px">
+    <div style="display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:8px">
+      <div class="logo" style="width:84px;height:84px">EA</div>
+    </div>
+    <h1 style="font-size:1.4rem">${title}</h1>
+    <p style="color:var(--muted)">${desc}</p>
+    <div style="display:flex;gap:12px;justify-content:center;margin-top:12px">
+      <button class="btn-play" id="starter-play">Play</button>
+      <button class="btn-demo" id="starter-cancel">Cancel</button>
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+  document.getElementById('starter-play').addEventListener('click', ()=> { modal.remove(); startActivity(id); });
+  document.getElementById('starter-cancel').addEventListener('click', ()=> modal.remove());
+}
+
+/* Game area references */
+const mainMenu = document.getElementById('main-menu');
+const gameArea = document.getElementById('game-area');
+const gameTitleEl = document.getElementById('game-title');
+const qContent = document.getElementById('question-content');
+const scoreEl = document.getElementById('score');
+const progressFill = document.getElementById('progress-fill');
+const feedbackEl = document.getElementById('feedback');
+const checkBtn = document.getElementById('check-btn');
+const nextBtn = document.getElementById('next-btn');
+
+let currentActivity=0, currentQuestion=0, score=0, totalQuestions=0, gameData=null;
+
+/* Start selected activity */
+function startActivity(id){
+  currentActivity=id; currentQuestion=0; score=0; scoreEl.textContent=score;
+  mainMenu.style.display='none'; gameArea.style.display='block'; feedbackEl.style.display='none';
+  progressFill.style.width='0%'; gameTitleEl.textContent = activitiesList.find(a=>a.id===id).title;
+
+  switch(id){
+    case 1: gameData = JSON.parse(JSON.stringify(FILL_BLANKS)); totalQuestions=gameData.length; showFill(); break;
+    case 2: gameData = JSON.parse(JSON.stringify(WORD_BANK)); totalQuestions=gameData.length; showWordMatch(); break;
+    case 3: gameData = JSON.parse(JSON.stringify(GRAMMAR || [])); /* previous grammar small list */
+            gameData = [
+              {q:"She ___ to school every day.", opts:["go","goes","going","gone"], correct:1},
+              {q:"I have ___ my homework.", opts:["finish","finished","finishing","finishes"], correct:1},
+              {q:"They ___ playing now.", opts:["is","am","are","be"], correct:2},
+              {q:"If I ___ rich, I would travel.", opts:["am","was","were","be"], correct:2},
+              {q:"We ___ to the movies last night.", opts:["go","goes","went","going"], correct:2},
+              {q:"She ___ lived here for five years.", opts:["have","has","had","having"], correct:1}
+            ];
+            totalQuestions=gameData.length; showGrammar(); break;
+    case 4: gameData = JSON.parse(JSON.stringify(SENTENCE_DATA)); totalQuestions=gameData.length; showSentence(); break;
+    case 5: gameData = JSON.parse(JSON.stringify(READING_DATA)); totalQuestions=gameData.reduce((s,p)=>s+p.qs.length,0); showReading(); break;
+    case 6: gameData = JSON.parse(JSON.stringify(SPELLING_WORDS)); totalQuestions=gameData.length; showSpelling(); break;
+    case 7: gameData = memoryData(); totalQuestions=gameData.cards.length/2; showMemory(); break;
+    case 8: gameData = JSON.parse(JSON.stringify(WORD_BANK)); totalQuestions=gameData.length; showSynAnt(); break;
+  }
+  updateProgress();
+}
+
+/* ---------- Activity 1: Fill in the Blanks ---------- */
+function showFill(){
+  const q = gameData[currentQuestion];
+  qContent.innerHTML = `<div class="question-container">
+    <div class="question-text">${q.sentence.replace('___','<input id="fill-input" class="blank-input" placeholder="Type here...">')}</div>
+  </div>`;
+  checkBtn.style.display='inline-block'; nextBtn.style.display='none';
+  setTimeout(()=>{ const el = document.getElementById('fill-input'); if(el) el.focus(); },80);
+}
+
+/* ---------- Activity 2: Word Matching (use emoji from WORD_BANK) ---------- */
+function showWordMatch(){
+  const pool = gameData.slice(0,100); // up to 100
+  // shuffle word list and emoji list separately
+  const words = shuffle(pool.map(w=>w.word));
+  const emojis = shuffle(pool.map(w=>({word:w.word, emoji:w.emoji})));
+
+  qContent.innerHTML = `<div class="question-container">
+    <div class="question-text">Tap an emoji then tap the matching word.</div>
+    <div class="word-match">
+      <div class="word-list" id="emoji-list"><h4 style="color:var(--muted)">Emojis</h4></div>
+      <div class="word-list" id="word-list"><h4 style="color:var(--muted)">Words</h4></div>
+    </div>
+    <div id="match-feedback"></div>
+  </div>`;
+
+  const emojiList = document.getElementById('emoji-list');
+  const wordList = document.getElementById('word-list');
+  emojis.forEach(it=>{
+    const el = document.createElement('div'); el.className='word-item'; el.textContent=it.emoji; el.dataset.word=it.word;
+    el.onclick = ()=> selectEmoji(el);
+    emojiList.appendChild(el);
+  });
+  words.forEach(w=>{
+    const el = document.createElement('div'); el.className='word-item'; el.textContent=w; el.dataset.word=w;
+    el.onclick = ()=> selectWordMatch(el);
+    wordList.appendChild(el);
+  });
+  checkBtn.style.display='none'; nextBtn.style.display='none';
+  gameData._selectedEmoji=null; gameData._matches=0;
+}
+function selectEmoji(el){
+  if(el.classList.contains('matched')) return;
+  document.querySelectorAll('#emoji-list .word-item').forEach(i=>i.classList.remove('selected'));
+  el.classList.add('selected'); gameData._selectedEmoji = el.dataset.word;
+  tryMatch();
+}
+function selectWordMatch(el){
+  if(el.classList.contains('matched')) return;
+  document.querySelectorAll('#word-list .word-item').forEach(i=>i.classList.remove('selected'));
+  el.classList.add('selected'); gameData._selectedWord = el.dataset.word;
+  tryMatch();
+}
+function tryMatch(){
+  const feed = document.getElementById('match-feedback'); if(!feed) return;
+  if(!gameData._selectedEmoji || !gameData._selectedWord) return;
+  if(gameData._selectedEmoji === gameData._selectedWord){
+    document.querySelectorAll(`[data-word="${gameData._selectedEmoji}"]`).forEach(el=>el.classList.add('matched'));
+    gameData._matches++; score+=10; scoreEl.textContent=score; feed.innerHTML = `<div style="color:#bff7d9;font-weight:900">Correct! +10</div>`;
+    if(gameData._matches === Math.min(12, gameData.length)) nextBtn.style.display='inline-block'; // allow progress after 12 matches
+  } else {
+    feed.innerHTML = `<div style="color:#ffd8d8;font-weight:800">Try again!</div>`;
+  }
+  gameData._selectedEmoji=null; gameData._selectedWord=null;
+  setTimeout(()=>{ document.querySelectorAll('.word-item').forEach(i=>i.classList.remove('selected')); },700);
+}
+
+/* ---------- Activity 3: Grammar ---------- */
+function showGrammar(){
+  const q = gameData[currentQuestion];
+  qContent.innerHTML = `<div class="question-container">
+    <div class="question-text">${q.q}</div>
+    <div class="option-grid">${q.opts.map((o,idx)=>`<button class="option-btn" onclick="selectOpt(${idx})">${o}</button>`).join('')}</div>
+  </div>`;
+  checkBtn.style.display='inline-block'; nextBtn.style.display='none'; gameData.selectedOption=null;
+}
+function selectOpt(i){ document.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected')); const btns=document.querySelectorAll('.option-btn'); if(btns[i]) btns[i].classList.add('selected'); gameData.selectedOption=i; }
+
+/* ---------- Activity 4: Sentence Builder (50 entries) ---------- */
+function showSentence(){
+  const q = gameData[currentQuestion];
+  const shuffled = shuffle(q.words.slice());
+  qContent.innerHTML = `<div class="question-container">
+    <div class="question-text">Tap words to build a correct sentence:</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">${shuffled.map(w=>`<div class="word-item" onclick="addWord('${w}')">${w}</div>`).join('')}</div>
+    <div class="sentence-builder" id="sentence-area"><p style="color:var(--muted)">Built sentence appears here</p></div>
+  </div>`;
+  checkBtn.style.display='inline-block'; nextBtn.style.display='none'; gameData.built=[];
+}
+function addWord(w){ gameData.built.push(w); updateBuilt(); }
+function updateBuilt(){ const area=document.getElementById('sentence-area'); area.innerHTML = gameData.built.map((w,i)=>`<span class="sentence-chip" onclick="removeBuilt(${i})">${w}</span>`).join('') || `<p style="color:var(--muted)">Built sentence appears here</p>`; }
+function removeBuilt(i){ gameData.built.splice(i,1); updateBuilt(); }
+
+/* ---------- Activity 5: Reading Comprehension (bigger passages) ---------- */
+function showReading(){
+  // passage with 2 questions each (we set totalQuestions accordingly)
+  let pIndex = 0, qIndex = 0;
+  // find passage & question index
+  let cumulative = 0;
+  for(let i=0;i<gameData.length;i++){
+    const len = gameData[i].qs.length;
+    if(currentQuestion < cumulative + len){ pIndex = i; qIndex = currentQuestion - cumulative; break; }
+    cumulative += len;
+  }
+  const passage = gameData[pIndex]; const q = passage.qs[qIndex];
+  qContent.innerHTML = `<div class="question-container">
+    <div style="background:rgba(255,255,255,0.01);padding:12px;border-radius:8px;color:var(--muted);margin-bottom:10px;line-height:1.6">${passage.passage}</div>
+    <div class="question-text">${q.q}</div>
+    <div class="option-grid">${q.opts.map((o,idx)=>`<button class="option-btn" onclick="selectOpt(${idx})">${o}</button>`).join('')}</div>
+  </div>`;
+  checkBtn.style.display='inline-block'; nextBtn.style.display='none'; gameData.selectedOption=null;
+}
+
+/* ---------- Activity 6: Spelling Puzzle (hard words) ---------- */
+function showSpelling(){
+  const word = gameData[currentQuestion];
+  const letters = word.split('');
+  const shuffled = shuffle(letters.slice());
+  qContent.innerHTML = `<div class="question-container">
+    <div class="question-text">Unscramble the letters to form a correct word:</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">${shuffled.map((l,i)=>`<div class="word-item" onclick="pickLetter(${i})" data-letter="${shuffled[i]}">${shuffled[i]}</div>`).join('')}</div>
+    <div class="sentence-builder" id="spell-area"></div>
+    <div style="margin-top:8px"><button class="menu-play" onclick="clearSpell()">Clear</button></div>
+  </div>`;
+  checkBtn.style.display='inline-block'; nextBtn.style.display='none';
+  gameData.spell = {shuffled, picked:[]};
+}
+function pickLetter(i){
+  const node = document.querySelectorAll('.word-item')[i];
+  if(!node || node.classList.contains('used')) return;
+  node.classList.add('used');
+  gameData.spell.picked.push(node.dataset.letter);
+  updateSpellArea();
+}
+function updateSpellArea(){ const area=document.getElementById('spell-area'); area.innerHTML = gameData.spell.picked.map((c,i)=>`<span class="sentence-chip" onclick="removeSpell(${i})">${c}</span>`).join(''); }
+function removeSpell(i){ const letter=gameData.spell.picked[i]; gameData.spell.picked.splice(i,1); const items=document.querySelectorAll('.word-item'); for(let it of items){ if(it.dataset.letter===letter && it.classList.contains('used')){ it.classList.remove('used'); break; } } updateSpellArea(); }
+function clearSpell(){ document.querySelectorAll('.word-item').forEach(n=>n.classList.remove('used')); gameData.spell.picked=[]; updateSpellArea(); }
+
+/* ---------- Activity 7: Memory Match (12 pairs => 24 cards) ---------- */
+function memoryData(){
+  const pool = WORD_BANK.slice(0,12); // 12 pairs
+  const cards = [];
+  pool.forEach(it=>{
+    cards.push({type:'emoji',val:it.emoji,match:it.word});
+    cards.push({type:'word',val:it.word,match:it.word});
+  });
+  return {cards: shuffle(cards)};
+}
+function showMemory(){
+  const cards = gameData.cards;
+  qContent.innerHTML = `<div class="question-container">
+    <div class="question-text">Flip two cards to find pairs (emoji ↔ word). 12 pairs total.</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px" id="mem-grid">
+      ${cards.map((c,idx)=>`<div class="word-item" data-idx="${idx}" onclick="flipCard(${idx})">❓</div>`).join('')}
+    </div>
+  </div>`;
+  gameData._flipped=[]; gameData._matched=0; checkBtn.style.display='none'; nextBtn.style.display='none';
+}
+function flipCard(i){
+  const el = document.querySelector(`[data-idx="${i}"]`);
+  if(!el || el.classList.contains('matched') || el.classList.contains('flipped')) return;
+  el.classList.add('flipped'); el.textContent = gameData.cards[i].val;
+  gameData._flipped.push(i);
+  if(gameData._flipped.length===2){
+    const [a,b] = gameData._flipped;
+    if(gameData.cards[a].match === gameData.cards[b].match && a!==b){
+      setTimeout(()=> {
+        document.querySelector(`[data-idx="${a}"]`).classList.add('matched');
+        document.querySelector(`[data-idx="${b}"]`).classList.add('matched');
+        document.querySelector(`[data-idx="${a}"]`).style.background='linear-gradient(90deg,#29d07a,#7c5cff)';
+        document.querySelector(`[data-idx="${b}"]`).style.background='linear-gradient(90deg,#29d07a,#7c5cff)';
+        gameData._matched += 1; score += 10; scoreEl.textContent=score; gameData._flipped=[];
+        if(gameData._matched === gameData.cards.length/2) nextBtn.style.display='inline-block';
+      },600);
+    } else {
+      setTimeout(()=> {
+        document.querySelector(`[data-idx="${a}"]`).classList.remove('flipped'); document.querySelector(`[data-idx="${a}"]`).textContent='❓';
+        document.querySelector(`[data-idx="${b}"]`).classList.remove('flipped'); document.querySelector(`[data-idx="${b}"]`).textContent='❓';
+        gameData._flipped=[];
+      },700);
+    }
+  }
+}
+
+/* ---------- Activity 8: Synonym / Antonym (100 words) ---------- */
+function showSynAnt(){
+  const item = gameData[currentQuestion];
+  const askSyn = Math.random() > 0.5;
+  // choose correct word (synonym or antonym)
+  const correct = askSyn ? (item.synonyms[0] || item.word) : (item.antonyms[0] || item.word);
+  // pick 3 distractors
+  const pool = shuffle(WORD_BANK.map(w=>w.word).filter(w=>w!==correct)).slice(0,3);
+  const options = shuffle([correct, ...pool]);
+  qContent.innerHTML = `<div class="question-container">
+    <div class="question-text">Find the ${askSyn ? 'synonym' : 'antonym'} of <strong>${item.word}</strong></div>
+    <div class="option-grid">${options.map((o,idx)=>`<button class="option-btn" onclick="selectOpt(${idx})">${o}</button>`).join('')}</div>
+  </div>`;
+  gameData._answerIndex = options.indexOf(correct);
+  checkBtn.style.display='inline-block'; nextBtn.style.display='none'; gameData.selectedOption=null;
+}
+
+/* ---------- Check / Next / Progress / Final ---------- */
+function checkAnswer(){
+  feedbackEl.style.display='none'; let isCorrect=false;
+
+  switch(currentActivity){
+    case 1: {
+      const val = (document.getElementById('fill-input')||{}).value || '';
+      if(!val){ showFeedback('Please type an answer','incorrect'); return; }
+      isCorrect = val.trim().toLowerCase() === gameData[currentQuestion].answer.toLowerCase();
+      break;
+    }
+    case 3: {
+      const q = gameData[currentQuestion]; if(gameData.selectedOption==null){ showFeedback('Choose an option','incorrect'); return; }
+      isCorrect = gameData.selectedOption === q.correct;
+      document.querySelectorAll('.option-btn').forEach((b,i)=> { if(i===q.correct) b.classList.add('correct'); else if(i===gameData.selectedOption && !isCorrect) b.classList.add('incorrect'); });
+      break;
+    }
+    case 4: {
+      const built = (gameData.built||[]).join(' ');
+      isCorrect = built === gameData[currentQuestion].correct;
+      break;
+    }
+    case 5: {
+      const attempt = (gameData.spell && gameData.spell.picked.join('')) || '';
+      isCorrect = attempt.toLowerCase() === gameData[currentQuestion].toLowerCase();
+      break;
+    }
+    case 2: {
+      // Word matching handled inline
+      return;
+    }
+    case 7: {
+      // memory handled inline
+      return;
+    }
+    case 8: {
+      if(gameData.selectedOption==null){ showFeedback('Choose an option','incorrect'); return; }
+      isCorrect = gameData.selectedOption === gameData._answerIndex;
+      document.querySelectorAll('.option-btn').forEach((b,i)=> { if(i===gameData._answerIndex) b.classList.add('correct'); else if(i===gameData.selectedOption && !isCorrect) b.classList.add('incorrect'); });
+      break;
+    }
+    case 5: break;
+    default: break;
+  }
+
+  if(isCorrect){ score += 10; showFeedback('🎉 Correct! +10','correct'); }
+  else { showFeedback('❌ Not correct.','incorrect'); }
+  scoreEl.textContent = score; checkBtn.style.display='none'; nextBtn.style.display='inline-block';
+}
+
+function showFeedback(msg,type){
+  feedbackEl.style.display='block'; feedbackEl.textContent = msg;
+  feedbackEl.style.color = type==='correct' ? '#bff7d9' : '#ffd8d8';
+  feedbackEl.style.background = type==='correct' ? 'rgba(41,208,122,0.06)' : 'rgba(255,107,107,0.04)';
+  feedbackEl.style.padding='10px'; feedbackEl.style.borderRadius='8px';
+}
+
+/* select option helper for many activities */
+function selectOpt(idx){ document.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected')); const btns=document.querySelectorAll('.option-btn'); if(btns[idx]) btns[idx].classList.add('selected'); gameData.selectedOption = idx; }
+
+/* Next question logic */
+function nextQuestion(){
+  currentQuestion++; feedbackEl.style.display='none'; checkBtn.style.display='none'; nextBtn.style.display='none';
+  if(currentQuestion >= totalQuestions){ showFinal(); return; }
+  switch(currentActivity){
+    case 1: showFill(); break;
+    case 2: showWordMatch(); break;
+    case 3: showGrammar(); break;
+    case 4: showSentence(); break;
+    case 5: showReading(); break;
+    case 6: showSpelling(); break;
+    case 7: showMemory(); break;
+    case 8: showSynAnt(); break;
+  }
+  updateProgress();
+}
+
+/* Final screen */
+function showFinal(){
+  qContent.innerHTML = `<div class="final-score">
+    <h2>Activity Complete</h2>
+    <p>Your Score: ${score} / ${totalQuestions*10}</p>
+    <p style="color:var(--muted)">Great work — try other games from the menu to continue practice.</p>
+    <div style="margin-top:10px"><button class="menu-play" onclick="backToMenu()">Back to Menu</button></div>
+  </div>`;
+  progressFill.style.width='100%'; checkBtn.style.display='none'; nextBtn.style.display='none';
+}
+
+/* Back to menu */
+function backToMenu(){
+  gameArea.style.display='none'; mainMenu.style.display='block'; currentActivity=0; currentQuestion=0; score=0; scoreEl.textContent=score;
+}
+
+/* Progress update */
+function updateProgress(){ progressFill.style.width = `${Math.round((currentQuestion/totalQuestions)*100)}%`; }
+
+/* Utility shuffle */
+function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]] } return arr; }
+
+/* Memory data helper used earlier (ensure repeated function reference) */
+function memoryData(){ const pool = WORD_BANK.slice(0,12); const cards=[]; pool.forEach(it=>{ cards.push({type:'emoji',val:it.emoji,match:it.word}); cards.push({type:'word',val:it.word,match:it.word}); }); return {cards:shuffle(cards)} }
+
+/* Initialize: menu ready (nothing else required) */
+</script>
+</body>
+</html>
